@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AMANAH – Design preview</title>
+<!-- build: splash-load-fix 2026-11-05 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#071410;--surface:#10231C;--text:#F3FAF6;--muted:#9DB3A8;--line:rgba(243,250,246,.14);
+  --em:#18A779;--em2:#15966C;--on-em:#04150F;--warn:#E8A33A;--err:#F07A7A;
+  --glass:rgba(255,255,255,.08);--glass-hi:rgba(255,255,255,.16);--edge:rgba(255,255,255,.2);
+  --hero:linear-gradient(145deg,rgba(24,167,121,.45),rgba(18,61,49,.35));--hero-text:#F3FAF6;
+  --blob-a:#18A779;--blob-b:#123D31;--shadow:0 14px 40px rgba(0,0,0,.45);
+  color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){
+  --bg:#F5F8F6;--surface:#FFFFFF;--text:#17251F;--muted:#586B61;--line:rgba(23,37,31,.12);
+  --em:#0F7A59;--em2:#0C6A4D;--on-em:#FFFFFF;--warn:#9A6200;--err:#B93434;
+  --glass:rgba(255,255,255,.62);--glass-hi:rgba(255,255,255,.85);--edge:rgba(255,255,255,.95);
+  --hero:linear-gradient(145deg,rgba(24,167,121,.28),rgba(233,245,239,.7));--hero-text:#071D19;
+  --blob-a:#7AD9B4;--blob-b:#E9F5EF;--shadow:0 14px 36px rgba(18,61,49,.16);color-scheme:light}}
+:root[data-theme="light"]{
+  --bg:#F5F8F6;--surface:#FFFFFF;--text:#17251F;--muted:#586B61;--line:rgba(23,37,31,.12);
+  --em:#0F7A59;--em2:#0C6A4D;--on-em:#FFFFFF;--warn:#9A6200;--err:#B93434;
+  --glass:rgba(255,255,255,.62);--glass-hi:rgba(255,255,255,.85);--edge:rgba(255,255,255,.95);
+  --hero:linear-gradient(145deg,rgba(24,167,121,.28),rgba(233,245,239,.7));--hero-text:#071D19;
+  --blob-a:#7AD9B4;--blob-b:#E9F5EF;--shadow:0 14px 36px rgba(18,61,49,.16);color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--text);font:500 15px/1.45 Manrope,system-ui,-apple-system,"Segoe UI",sans-serif}
+.num{font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.stage{min-height:100vh;display:grid;place-items:center;padding:16px}
+.phone{position:relative;width:100%;max-width:420px;height:min(844px,calc(100vh - 32px));min-height:560px;border-radius:32px;background:var(--bg);overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;border:1px solid var(--line);box-shadow:var(--shadow)}
+.blobs{position:absolute;inset:0;pointer-events:none}
+.blobs i{position:absolute;border-radius:50%;background:radial-gradient(circle at 32% 28%,var(--glass-hi),color-mix(in srgb,var(--blob-a) 50%,transparent) 52%,color-mix(in srgb,var(--blob-a) 20%,transparent));border:1px solid var(--edge);box-shadow:inset -14px -18px 44px color-mix(in srgb,var(--em) 30%,transparent);opacity:.85}
+.blobs i:first-child{width:300px;height:300px;top:-110px;right:-120px}.blobs i:nth-child(2){width:46px;height:46px;top:170px;left:22px}.blobs i:nth-child(3){width:240px;height:240px;top:340px;left:-130px}
+.blobs i:last-child{width:200px;height:200px;bottom:90px;right:-110px}
+.scr{position:relative;padding:20px 18px 110px;min-height:760px}
+.glass{background:var(--glass);border:1px solid var(--edge);border-radius:22px;
+  -webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.25),var(--shadow)}
+@media (prefers-reduced-transparency:reduce){.glass,.hero{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--surface)!important}}
+@supports not (backdrop-filter:blur(1px)){.glass,.hero{background:var(--surface)!important}}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.ava{width:44px;height:44px;border-radius:50%;background:var(--em);color:var(--on-em);display:grid;place-items:center;font-weight:800;flex:none}
+.top p{margin:0;color:var(--muted);font-size:13px}.top b{font-size:17px;font-weight:700}
+.top .sp{flex:1}
+.ib{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--glass);color:var(--text);cursor:pointer;font:600 16px Manrope,sans-serif;touch-action:manipulation}
+.hero{padding:22px;margin-bottom:14px;background:var(--hero);color:var(--hero-text)}
+.hero small{opacity:.8;font-size:13px}.hero .big{font-size:40px;font-weight:800;margin:2px 0 14px}
+.split{display:flex;gap:10px}.split div{flex:1;padding:10px 12px;border-radius:14px;background:rgba(0,0,0,.14);font-size:12px}
+.split b{display:block;font-size:16px;font-weight:700;margin-top:2px}
+.acts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.act{min-height:76px;border-radius:18px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:600 13px Manrope,sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;touch-action:manipulation}
+.act.main{background:var(--em);color:var(--on-em);border-color:transparent}
+.act span{font-size:20px;line-height:1}
+.kyc{display:flex;gap:12px;align-items:center;padding:14px;margin-bottom:18px}
+.kyc .dot{width:10px;height:10px;border-radius:50%;background:var(--warn);flex:none}
+.kyc p{margin:0;font-size:13px;color:var(--muted)}.kyc b{display:block;color:var(--text);font-size:14px}
+h2{font-size:15px;font-weight:700;margin:0 0 10px}
+.fav{display:flex;gap:14px;margin-bottom:18px;overflow-x:auto;padding-bottom:4px}
+.fav button{background:none;border:0;color:var(--text);font:600 12px Manrope,sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:64px;min-height:44px}
+.fav .ava{background:var(--surface);color:var(--em);border:1px solid var(--line)}
+.list{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:4px 14px}
+.tx{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.tx:first-child{border-top:0}
+.tx .who{flex:1;min-width:0}.tx b{display:block;font-weight:600}.tx small{color:var(--muted);font-size:12px}
+.badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;border:1px solid currentColor}
+.ok{color:var(--em)}.pend{color:var(--warn)}
+.note{font-size:12px;color:var(--muted);margin:14px 2px 0}
+nav{position:sticky;z-index:20;bottom:calc(12px + env(safe-area-inset-bottom,0px));margin:-78px 12px 12px;display:flex;padding:6px;gap:2px;border-radius:26px}
+nav button{flex:1;min-height:52px;border:0;border-radius:20px;background:transparent;color:var(--muted);font:600 11px Manrope,sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;touch-action:manipulation}
+nav button span{font-size:18px;line-height:1}
+nav button[aria-current="page"]{background:var(--glass-hi);color:var(--text);box-shadow:inset 0 0 0 1px var(--edge)}
+:focus-visible{outline:3px solid var(--em);outline-offset:2px}
+.steps{display:flex;gap:6px;margin:6px 0 18px}.steps i{flex:1;height:4px;border-radius:2px;background:var(--line)}.steps i.on{background:var(--em)}
+h1{font-size:24px;font-weight:800;margin:0 0 6px;letter-spacing:-.02em}
+.sub{color:var(--muted);margin:0 0 16px}
+.opt{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--surface);margin-bottom:8px;cursor:pointer;min-height:60px}
+.opt input{width:20px;height:20px;accent-color:var(--em);flex:none}
+.opt:has(input:checked){border-color:var(--em);box-shadow:0 0 0 2px var(--em) inset}
+label.f{display:block;font-size:13px;color:var(--muted);margin:0 0 6px}
+.amt{width:100%;min-height:64px;border-radius:18px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:800 30px Manrope,sans-serif;padding:0 16px}
+.err{color:var(--err);font-size:13px;min-height:20px;margin:8px 0}
+.cta{width:100%;min-height:54px;border-radius:18px;border:0;background:var(--em);color:var(--on-em);font:700 16px Manrope,sans-serif;cursor:pointer;margin-top:10px;touch-action:manipulation}
+.cta.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.cta:disabled{opacity:.65;cursor:progress}
+.sum{padding:6px 16px}
+.r{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid var(--line);font-size:14px}
+.r:first-child{border-top:0}.r span:first-child{color:var(--muted)}.r b{text-align:right}
+.r.tot{font-size:17px}.r.tot span:first-child{color:var(--text);font-weight:700}
+.exp{font-size:13px;color:var(--muted);margin:10px 2px}
+.done{text-align:center;padding-top:40px}
+.done .ic{width:72px;height:72px;border-radius:50%;margin:0 auto 16px;display:grid;place-items:center;font-size:30px;background:var(--glass-hi);border:1px solid var(--edge)}
+.toast{position:sticky;margin:-144px 18px 96px;bottom:96px;padding:12px 16px;z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+[hidden]{display:none!important}
+.banner{font-size:12px;text-align:center;padding:8px;background:var(--surface);border-bottom:1px solid var(--line);color:var(--muted)}
+.link{background:none;border:0;color:var(--em);font:700 12px Manrope,sans-serif;cursor:pointer;min-height:44px;padding:0 8px;text-decoration:underline}
+.obs{display:flex;gap:6px;margin:6px 0 18px}.obs i{flex:1;height:4px;border-radius:2px;background:var(--line)}.obs i.on{background:var(--em)}
+.chips{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}.chip{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:600 13px Manrope,sans-serif;cursor:pointer}.chip[aria-pressed=true]{background:var(--em);color:var(--on-em);border-color:transparent}
+.rowbtn{width:100%;background:none;border:0;text-align:left;color:var(--text);font:inherit;cursor:pointer;min-height:60px}
+.bad{color:var(--err)}
+[aria-invalid=true]{border-color:var(--err)!important;box-shadow:0 0 0 1px var(--err)}
+.fld{width:100%;min-height:52px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:600 16px Manrope,sans-serif;padding:0 14px;margin-bottom:12px}
+.chk{display:flex;gap:12px;align-items:flex-start;padding:8px 0;font-size:14px}.chk input{width:22px;height:22px;accent-color:var(--em);flex:none;margin-top:1px}
+.sel{margin:12px 0}.hint{font-size:13px;color:var(--muted);margin:0 0 12px}
+.qrc{padding:20px;text-align:center;margin-bottom:14px}.qrbox{width:180px;height:180px;margin:0 auto 12px;padding:10px;background:#fff;border-radius:16px}.qrbox svg{width:100%;height:100%;fill:#071D19;shape-rendering:crispEdges}
+.pill{display:flex;gap:12px;padding:14px;border-radius:18px;border:1px solid var(--line);background:var(--surface);margin-bottom:10px}.pill div{flex:1}.pill small{color:var(--muted);display:block}.pill b{font-size:22px;font-weight:800}
+dialog{inset:auto 0 0 0;margin:0 auto;width:100%;max-width:420px;border:1px solid var(--line);border-radius:26px 26px 0 0;background:var(--surface);color:var(--text);padding:20px}dialog::backdrop{background:rgba(0,0,0,.5)}
+#splash{position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:env(safe-area-inset-top,0px) 24px env(safe-area-inset-bottom,0px);background:#001008 radial-gradient(circle at 50% 42%,rgba(24,167,121,.4),transparent 62%);color:#F3FAF6;cursor:pointer}
+#splash .sMark{display:grid;place-items:center;text-shadow:0 0 44px rgba(24,167,121,.6);animation:sIn .9s cubic-bezier(.2,.7,.2,1) both}
+#splash .sMark span{font:800 40px Manrope,sans-serif;letter-spacing:.26em;text-indent:.26em}
+#splash .tag{margin:22px 0 0;font-size:14px;color:#9DB3A8;animation:sIn .9s .45s cubic-bezier(.2,.7,.2,1) both}
+#splash .sFoot{position:absolute;bottom:calc(40px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;gap:12px;font-size:12px;color:#9DB3A8}
+#splash .bar{display:block;width:120px;height:3px;border-radius:2px;background:#18A779;transform-origin:left;animation:sBar 2.6s linear both}
+@keyframes sIn{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes sBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){#splash *{animation:none!important}}
+.phone{background:linear-gradient(165deg,var(--bg),color-mix(in srgb,var(--blob-a) 20%,var(--bg)));box-shadow:var(--shadow),inset 0 0 0 1px var(--edge)}
+.blobs::after{content:"";position:absolute;left:-25%;right:-25%;top:42%;height:300px;border-radius:50%;border-top:2px solid var(--edge);transform:rotate(-9deg);opacity:.8}
+.banner{position:relative;z-index:2;background:var(--glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--edge)}
+.hero{position:relative;overflow:hidden;border-radius:26px}
+.hero::after{content:"";position:absolute;right:-50px;top:-36px;width:260px;height:170px;border-radius:50%;border-top:2px solid var(--edge);transform:rotate(-14deg);pointer-events:none}
+.split div{background:var(--glass);border:1px solid var(--edge)}
+.act:not(.main),.fav .ava{background:var(--glass);border:1px solid var(--edge);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.list{background:color-mix(in srgb,var(--surface) 55%,transparent);border:1px solid var(--edge);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.act.main{box-shadow:0 8px 20px color-mix(in srgb,var(--em) 40%,transparent),inset 0 1px 0 rgba(255,255,255,.3)}
+@media (prefers-reduced-transparency:reduce){.banner,.act:not(.main),.list,.fav .ava{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--surface)}}
+.blobs i{display:none}
+.fx{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.fx .goo{position:absolute;inset:0;filter:url(#goo);opacity:.6}
+.fx .goo b{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,#fff 75%,var(--blob-a)),var(--blob-a) 46%,color-mix(in srgb,var(--blob-a) 65%,#000))}
+.fx .goo b::after{content:"";position:absolute;left:18%;top:14%;width:36%;height:22%;border-radius:50%;background:rgba(255,255,255,.75);filter:blur(4px)}
+.fx .goo b:nth-child(1){width:190px;height:190px;left:20px;top:90px;animation:g1 15s ease-in-out infinite alternate}
+.fx .goo b:nth-child(2){width:130px;height:130px;right:-10px;top:70px;animation:g2 12s ease-in-out infinite alternate}
+.fx .goo b:nth-child(3){width:90px;height:90px;left:40%;top:420px;animation:g3 17s ease-in-out infinite alternate}
+@keyframes g1{to{transform:translate(120px,260px) scale(1.15)}}
+@keyframes g2{to{transform:translate(-160px,300px) scale(.9)}}
+@keyframes g3{to{transform:translate(-90px,-250px) scale(1.2)}}
+.hero .fx .goo{opacity:.5}
+.hero .fx .goo b:nth-child(1){width:110px;height:110px;left:10px;top:20px;animation-name:h1}
+.hero .fx .goo b:nth-child(2){width:80px;height:80px;right:0;top:10px;animation-name:h2}
+.hero .fx .goo b:nth-child(3){width:60px;height:60px;left:45%;top:110px;animation-name:h3}
+@keyframes h1{to{transform:translate(200px,60px) scale(1.2)}}
+@keyframes h2{to{transform:translate(-190px,70px) scale(.9)}}
+@keyframes h3{to{transform:translate(-120px,-60px) scale(1.2)}}
+.hero>*:not(.fx),.done>*:not(.fx),#ob>*:not(.fx){position:relative;z-index:1}
+@media (prefers-reduced-motion:reduce){.fx *{animation:none!important}}
+/* lighter splash */
+#splash{--blob-a:#7AD9B4;background:linear-gradient(165deg,#F4FBF7,#C4EEDD 60%,#98DFC4);color:#071D19}
+#splash .sMark,#splash .tag{position:relative;z-index:1}
+#splash .sMark{text-shadow:0 0 30px rgba(255,255,255,.85)}
+#splash .tag,#splash .sFoot{color:#2F5A4B;z-index:1}
+#splash .bar{background:#0F7A59}
+:root{--d1:rgba(200,255,235,.95);--d2:rgba(24,167,121,.85);--d3:rgba(8,80,58,.95);--phoneBg:radial-gradient(circle at 70% 18%,#123D31,#071410 62%,#030a07)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--d1:#fff;--d2:rgba(130,226,192,.95);--d3:rgba(24,167,121,.8);--phoneBg:linear-gradient(165deg,#F4FBF7,#C4EEDD 62%,#98DFC4);--text:#0B3A2E;--muted:#3A6153;--glass:rgba(255,255,255,.26);--edge:rgba(255,255,255,.85)}}
+:root[data-theme="light"]{--d1:#fff;--d2:rgba(130,226,192,.95);--d3:rgba(24,167,121,.8);--phoneBg:linear-gradient(165deg,#F4FBF7,#C4EEDD 62%,#98DFC4);--text:#0B3A2E;--muted:#3A6153;--glass:rgba(255,255,255,.26);--edge:rgba(255,255,255,.85)}
+.phone{background:var(--phoneBg)}
+.fx .goo b{background:radial-gradient(circle at 35% 30%,var(--d1),var(--d2) 45%,var(--d3))}
+#splash{--d1:#fff;--d2:rgba(130,226,192,.95);--d3:rgba(24,167,121,.8)}
+#home>*:not(.fx){position:relative;z-index:1}
+#home .fx{bottom:auto;height:400px;-webkit-mask-image:linear-gradient(#000 72%,transparent);mask-image:linear-gradient(#000 72%,transparent)}
+#home .fx .goo{opacity:.6}
+#home .fx .goo b:nth-child(1){width:150px;height:150px;left:20px;top:60px;animation-name:h1}
+#home .fx .goo b:nth-child(2){width:110px;height:110px;right:0;top:40px;animation-name:h2}
+#home .fx .goo b:nth-child(3){width:80px;height:80px;left:45%;top:260px;animation-name:h3}
+.hero2{text-align:center;color:var(--text);margin:8px 0 18px}
+.hero2 .whead{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.hero2 small{font-size:14px;font-weight:700;color:var(--text)}
+.hero2 .big{font-size:46px;font-weight:800;letter-spacing:-.02em;margin:10px 0 4px}
+.cur{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--edge);background:var(--glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:var(--text);font:700 13px Manrope,sans-serif;cursor:pointer;touch-action:manipulation}
+.top .ib{position:relative}.ibdot{position:absolute;top:9px;right:10px;width:9px;height:9px;border-radius:50%;background:var(--warn);border:2px solid var(--bg)}
+dialog.pop{inset:0;margin:auto;max-width:320px;height:fit-content;border-radius:24px}
+.copt{display:flex;width:100%;align-items:center;gap:12px;min-height:56px;padding:8px 14px;margin-bottom:8px;border-radius:16px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:700 15px Manrope,sans-serif;text-align:left;cursor:pointer}
+.copt small{display:block;color:var(--muted);font-weight:500;font-size:12px}.copt:disabled{opacity:.6;cursor:not-allowed}.copt .k{flex:1}.copt[aria-checked=true]{border-color:var(--em);box-shadow:0 0 0 2px var(--em) inset}
+.nrow{padding:12px 0;border-top:1px solid var(--line)}.nrow:first-child{border-top:0}.nrow b{display:block}.nrow small{color:var(--muted)}
+button.ava{border:0;padding:0;cursor:pointer;font:inherit;font-weight:800}
+.copt b{font-weight:700;font-variant-numeric:tabular-nums}.copt[aria-pressed=true]{border-color:var(--em);box-shadow:0 0 0 2px var(--em) inset}
+dialog.pop{max-height:82vh;overflow:auto}
+.pfava{width:96px;height:96px;margin:0 auto 10px;font-size:28px}
+#rcList{max-height:340px;overflow:auto;margin:0 -2px 10px;padding:2px}
+dialog.pop{background:var(--glass);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--edge);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 20px 50px rgba(0,0,0,.25);color:var(--text)}
+#curSheet::backdrop{background:rgba(255,255,255,.04);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+#curSheet .copt{background:var(--glass);border:1px solid var(--edge);color:var(--text)}
+#curSheet .copt[aria-pressed=true]{border-color:var(--em);box-shadow:0 0 0 2px var(--em) inset}
+#curSheet .exp{color:var(--text);opacity:.85}
+@media (prefers-reduced-transparency:reduce){dialog.pop{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}}
+#sheet.pop{max-width:380px}
+#sheet::backdrop,#nsheet::backdrop{background:rgba(255,255,255,.04);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+#nsheet .nrow,#sheet .r{border-color:var(--edge)}
+#nsheet .cta.ghost,#sheet .cta.ghost{background:var(--glass);border:1px solid var(--edge);color:var(--text)}
+.tl{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:14px}.tl i{font-style:normal;width:22px;text-align:center}
+#pin>*:not(.fx){position:relative;z-index:1}
+.pinwrap{text-align:center;padding-top:24px}.pinwrap .pfava{margin:0 auto 14px}
+.dots{display:flex;justify-content:center;gap:14px;margin:22px 0 8px}
+.dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--text);opacity:.55}.dots i.on{background:var(--text);opacity:1}
+.dots.bad{animation:shake .35s}@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.pad{display:grid;grid-template-columns:repeat(3,76px);gap:14px;justify-content:center;margin:14px 0}
+.pad button{width:76px;height:76px;border-radius:50%;border:1px solid var(--edge);background:var(--glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:var(--text);font:700 26px Manrope,sans-serif;cursor:pointer;touch-action:manipulation}
+.pad button:active{background:var(--glass-hi)}
+@media (prefers-reduced-motion:reduce){.dots.bad{animation:none}}
+#topup>.top{position:relative;z-index:1}
+[data-tu="2"]>*:not(.fx){position:relative;z-index:1}
+[data-tu="2"] .fx{bottom:auto;height:420px;-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
+[data-tu="2"] .fx .goo{opacity:.55}
+[data-tu="2"] .fx .goo b:nth-child(1){width:150px;height:150px;left:20px;top:60px;animation-name:h1}
+[data-tu="2"] .fx .goo b:nth-child(2){width:110px;height:110px;right:0;top:40px;animation-name:h2}
+[data-tu="2"] .fx .goo b:nth-child(3){width:80px;height:80px;left:45%;top:270px;animation-name:h3}
+.tuhead{display:flex;justify-content:center;margin:2px 0 12px}
+.gp{padding:6px 14px;margin:6px 0 10px}
+.gamt{width:100%;min-height:76px;background:transparent;border:0;text-align:center;color:var(--text);font:800 46px Manrope,sans-serif;letter-spacing:-.02em}
+.gamt::placeholder{color:var(--muted);opacity:.55}.gamt:focus-visible{outline:none}.gp:focus-within{outline:3px solid var(--em);outline-offset:2px}
+.qchips{display:flex;justify-content:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.qchips .chip{min-width:64px;background:var(--glass);border:1px solid var(--edge);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:var(--text)}
+.list .tx[aria-pressed=true]{background:color-mix(in srgb,var(--em) 14%,transparent);border-radius:14px}
+#wallet>*:not(.fx){position:relative;z-index:1}
+#wallet .fx{bottom:auto;height:380px;-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
+#wallet .fx .goo{opacity:.55}
+#wallet .fx .goo b:nth-child(1){width:150px;height:150px;left:20px;top:50px;animation-name:h1}
+#wallet .fx .goo b:nth-child(2){width:110px;height:110px;right:0;top:30px;animation-name:h2}
+#wallet .fx .goo b:nth-child(3){width:80px;height:80px;left:45%;top:240px;animation-name:h3}
+#send>.top,#send>.steps{position:relative;z-index:1}
+[data-step="2"]>*:not(.fx){position:relative;z-index:1}
+[data-step="2"] .fx{bottom:auto;height:420px;-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
+[data-step="2"] .fx .goo{opacity:.55}
+[data-step="2"] .fx .goo b:nth-child(1){width:150px;height:150px;left:20px;top:80px;animation-name:h1}
+[data-step="2"] .fx .goo b:nth-child(2){width:110px;height:110px;right:0;top:60px;animation-name:h2}
+[data-step="2"] .fx .goo b:nth-child(3){width:80px;height:80px;left:45%;top:290px;animation-name:h3}
+.sdwho{display:flex;align-items:center;gap:12px;padding:10px 14px;margin:0 0 12px}
+#send .fld,#send .opt{background:var(--glass);border:1px solid var(--edge);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:var(--text)}
+#send .opt:has(input:checked){border-color:var(--em);box-shadow:0 0 0 2px var(--em) inset}
+#send .cta.ghost{background:var(--glass);border:1px solid var(--edge);color:var(--text)}
+.xfrom{display:flex;justify-content:center;margin:2px 0 14px}.xfrom .cur{min-height:44px;padding:0 16px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--em);display:inline-block;margin-right:6px}
+.xcard{padding:16px 18px;margin:0}
+.xrow{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted)}
+.xrow .xs{letter-spacing:0;font-weight:600;font-size:13px}
+.xmain{display:flex;align-items:center;gap:10px;margin:10px 0}
+.xmain .sym{font:800 34px Manrope,sans-serif}
+.xamt{flex:1;min-width:0;min-height:48px;background:transparent;border:0;color:var(--text);font:800 34px Manrope,sans-serif;letter-spacing:-.02em;padding:0}
+.xamt::placeholder{color:var(--muted);opacity:.55}.xamt:focus-visible{outline:none}.xcard:focus-within{outline:3px solid var(--em);outline-offset:2px}
+.xout{flex:1;font:800 34px Manrope,sans-serif;letter-spacing:-.02em;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.xcur{min-height:48px;padding:0 14px;border-radius:16px}
+.xfoot{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);border-top:1px solid var(--edge);padding-top:10px}
+.xswap{display:flex;justify-content:center;margin:-14px 0;position:relative;z-index:2}
+.xpill{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--edge);background:var(--glass-hi);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:var(--text);font:700 13px Manrope,sans-serif;cursor:pointer;touch-action:manipulation}
+.xl{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted)}
+.xbd{padding:6px 16px 10px;margin-top:14px}
+.xbd h3{display:flex;justify-content:space-between;align-items:center;font-size:13px;letter-spacing:.05em;margin:10px 0 4px}
+.xbd .bg{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;border:1px solid currentColor;color:var(--em)}
+.xgo{margin-top:14px;min-height:58px;font-size:16px}
+.xnote{text-align:center;font-size:12px;color:var(--muted);margin:10px 0 0}
+.qchips .chip[aria-pressed=true]{background:var(--em);color:var(--on-em);border-color:transparent}
+#xcSheet::backdrop{background:rgba(255,255,255,.04);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+#xcSheet .copt{background:var(--glass);border:1px solid var(--edge);color:var(--text)}
+#xcSheet .copt[aria-pressed=true]{border-color:var(--em);box-shadow:0 0 0 2px var(--em) inset}
+#xcSheet .cta.ghost{background:var(--glass);border:1px solid var(--edge);color:var(--text)}
+*{scrollbar-width:none;-ms-overflow-style:none}*::-webkit-scrollbar{display:none;width:0;height:0}
+.fld,.amt,.opt{background:color-mix(in srgb,var(--surface) 14%,transparent);color:var(--text)}
+.fld::placeholder,.amt::placeholder{color:var(--muted);opacity:.7}
+select.fld{appearance:auto}
+@supports (appearance:base-select){
+ select.fld,select.fld::picker(select){appearance:base-select}
+ select.fld{display:flex;align-items:center;gap:8px}
+ select.fld::picker-icon{color:var(--text);margin-left:auto}
+ select.fld::picker(select){background:color-mix(in srgb,var(--surface) 28%,transparent);-webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);border:1px solid var(--edge);border-radius:16px;padding:6px;box-shadow:0 18px 40px rgba(0,0,0,.25);color:var(--text)}
+ select.fld option{background:transparent;color:var(--text);padding:12px 14px;border-radius:10px;min-height:44px}
+ select.fld option:hover,select.fld option:checked{background:color-mix(in srgb,var(--em) 22%,transparent)}
+}
+.cal{max-width:340px}
+.cal .hd{display:flex;gap:8px;margin-bottom:10px}.cal .hd select{min-height:44px;margin:0;flex:1;padding:0 10px}
+.cal .dw,.cal .dg{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cal .dw{font-size:12px;color:var(--muted);margin-bottom:4px}
+.cal .dg button{min-height:40px;border-radius:12px;border:1px solid transparent;background:transparent;color:var(--text);font:600 14px Manrope,sans-serif;cursor:pointer}
+.cal .dg button:hover{background:color-mix(in srgb,var(--em) 18%,transparent)}
+.cal .dg button[aria-pressed=true]{background:var(--em);color:var(--on-em)}
+nav button[aria-current="page"]{background:color-mix(in srgb,#fff 8%,transparent);color:var(--text);box-shadow:inset 0 0 0 1px var(--edge)}
+nav button[aria-current="page"] span{color:var(--em)}
+.swv{position:relative;width:52px;height:32px;border-radius:999px;border:1px solid var(--edge);background:var(--glass);flex:none}
+.swv::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:var(--muted);transition:transform .15s,background .15s}
+[aria-checked=true] .swv{background:var(--em);border-color:transparent}
+[aria-checked=true] .swv::after{transform:translateX(20px);background:#fff}
+a.rowbtn{display:flex;text-decoration:none}
+textarea.fld{padding:12px 14px;min-height:120px;resize:vertical;line-height:1.4}
+.meter{height:8px;border-radius:999px;background:color-mix(in srgb,var(--text) 12%,transparent);overflow:hidden;margin:8px 0 4px}
+.meter i{display:block;height:100%;background:var(--em);border-radius:999px}.meter i.hi{background:var(--warn)}
+.lim{padding:12px 0;border-top:1px solid var(--edge)}.lim:first-child{border-top:0}.lim small{color:var(--muted);font-size:12px}
+.faq{margin-bottom:8px;padding:0 16px}.faq summary{min-height:52px;display:flex;align-items:center;cursor:pointer;font-weight:700;list-style:none}.faq summary::-webkit-details-marker{display:none}.faq summary::after{content:"+";margin-left:auto;font-size:20px;color:var(--em)}.faq[open] summary::after{content:"−"}.faq p{margin:0 0 14px;color:var(--muted)}
+#language .copt,#limits .copt{background:var(--glass);border:1px solid var(--edge);color:var(--text)}
+#language .copt[aria-pressed=true]{border-color:var(--em);box-shadow:0 0 0 2px var(--em) inset}
+@media (prefers-reduced-motion:reduce){.swv::after{transition:none}}
+@media (max-width:460px){.stage{padding:0}.phone{border-radius:0;border:0;height:100vh;height:100dvh}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.banner .link{color:color-mix(in srgb,var(--em) 40%,var(--text))}
+</style>
+</head>
+<body>
+<svg width="0" height="0" aria-hidden="true" style="position:absolute"><filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="14" result="b"/><feColorMatrix in="b" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -9"/></filter></svg>
+<div class="stage"><div class="phone">
+<div class="banner">Design preview. Names, balances and fees are sample data. <button class="link" data-go="ob">Preview onboarding</button> <button class="link" id="theme2">Switch light/dark</button> <button class="link" id="replay">Replay splash</button> <button class="link" id="resetDemo">Reset demo</button></div>
+<div id="splash" role="button" tabindex="0" aria-label="AMANAH. Press to continue">
+  <div class="fx" aria-hidden="true"><div class="goo"><b></b><b></b><b></b></div></div>
+  <div class="sMark"><span translate="no">AMANAH</span></div>
+  <p class="tag">Your money. Your people. Your trust.</p>
+  <div class="sFoot"><span>Connecting Europe and Africa</span><i class="bar"></i></div>
+</div>
+<div class="blobs" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+<section class="scr" id="home" aria-label="Home">
+  <div class="fx" aria-hidden="true"><div class="goo"><b></b><b></b><b></b></div></div>
+  <div class="top">
+    <button class="ava" data-go="profile" aria-label="Open your profile">HW</button>
+    <div><p>Good evening</p><b>Hodan Warsame</b></div><div class="sp"></div>
+    <button class="ib" id="bell" aria-label="Notifications, 4 unread"><span aria-hidden="true">🔔</span><i class="ibdot" aria-hidden="true"></i></button>
+    <button class="ib" id="theme" aria-label="Switch between light and dark mode">◐</button>
+  </div>
+  <div class="hero2">
+    <div class="whead"><button class="cur" id="curBtn" aria-haspopup="dialog" aria-label="Currency: US dollar. Change currency"><span id="curCode">USD</span> <span aria-hidden="true">▾</span></button></div>
+    <div class="big num" id="heroBal">$1,284.50</div>
+    <div class="split">
+      
+      
+    </div>
+  </div>
+  <div class="acts">
+    <button class="act main" data-go="send"><span aria-hidden="true">↗</span>Send money</button>
+    <button class="act" data-go="receive"><span aria-hidden="true">↙</span>Receive</button>
+    <button class="act" data-go="topup"><span aria-hidden="true">＋</span>Top up</button>
+    <button class="act" data-go="convert"><span aria-hidden="true">⇄</span>Transfer</button>
+  </div>
+  <div class="glass kyc">
+    <span class="dot" aria-hidden="true"></span>
+    <p><b>Identity check in review</b>You can add recipients now. Sending unlocks once we verify your ID.</p>
+  </div>
+  <h2>Favorite recipients</h2>
+  <div class="fav">
+    
+    
+    
+  </div>
+  <h2>Recent activity</h2>
+  <div class="list">
+    <div id="hRecent"></div>
+    
+  </div>
+  <p class="note">Sending is unavailable here while your verification is in review. This preview lets you try the flow anyway.</p>
+</section>
+
+<section class="scr" id="send" aria-label="Send money" hidden>
+  <div class="top"><button class="ib" id="back" aria-label="Go back">←</button><b>Send money</b></div>
+  <div class="steps" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+
+  <div data-step="1">
+    <h1>Who are you sending to?</h1><p class="sub">Search by name or @tag.</p>
+    <label class="f" for="rcq">Search recipients</label><input class="fld" id="rcq" type="search" autocomplete="off" placeholder="Name or @tag…">
+    <fieldset style="border:0;padding:0;margin:0"><legend class="sr" style="position:absolute;left:-999px">Recipient</legend>
+      <div id="rcList"></div>
+      
+      
+    </fieldset>
+    <button class="cta ghost" data-go="addrec">Add a new recipient</button>
+    <button class="cta" id="to2">Continue</button>
+  </div>
+
+  <div data-step="2" hidden>
+    <div class="fx" aria-hidden="true"><div class="goo"><b></b><b></b><b></b></div></div>
+    <div class="glass sdwho" id="sdWho"></div>
+    <div class="tuhead"><button class="cur" id="sdCur" aria-haspopup="dialog" aria-label="Currency. Change currency"><span id="sdCurCode">USD</span> <span aria-hidden="true">▾</span></button></div>
+    <h1 style="text-align:center">How much?</h1><p class="sub" style="text-align:center">Available: <b class="num" id="sdAvail">$1,284.50</b></p>
+    <label class="f" for="amount" id="sdLbl" style="text-align:center">Amount</label>
+    <div class="glass gp"><input class="gamt num" id="amount" inputmode="decimal" autocomplete="off" placeholder="0.00" aria-describedby="err"></div>
+    <div class="qchips" role="group" aria-label="Quick amounts"><button class="chip" data-sq="50">50</button><button class="chip" data-sq="100">100</button><button class="chip" data-sq="250">250</button><button class="chip" data-sq="500">500</button></div>
+    <p class="hint" style="text-align:center;margin-top:10px">Fees are shown on the next screen before you confirm.</p>
+    <p class="err" id="err" role="alert"></p>
+    <button class="cta" id="to3">See the full cost</button>
+  </div>
+
+  <div data-step="3" hidden>
+    <h1>Review your transfer</h1><p class="sub">Nothing is sent until you confirm.</p>
+    <div class="glass sum" id="sum"></div>
+    <p class="exp" id="exp" aria-live="polite"></p>
+    <button class="cta" id="confirm">Confirm with Face ID</button>
+    <button class="cta ghost" id="requote" hidden>Get a new quote</button>
+  </div>
+
+  <div data-step="4" hidden class="done">
+    <div class="fx" aria-hidden="true"><div class="goo"><b></b><b></b><b></b></div></div>
+    <div class="ic" aria-hidden="true">⏳</div>
+    <h1>Transfer pending</h1>
+    <p class="sub" id="doneText"></p>
+    <p class="exp num" id="ref"></p>
+    <button class="cta" id="finish">Back to home</button>
+  </div>
+</section>
+
+<section class="scr" id="receive" aria-label="Receive money" hidden>
+  <div class="top"><button class="ib" data-go="home" aria-label="Go back">←</button><b>Receive money</b></div>
+  <h1>Share your AMANAH details</h1><p class="sub">Anyone with AMANAH can send you USD. Share only what you’re comfortable with.</p>
+  <div class="glass qrc"><div class="qrbox"><svg id="qr" viewBox="0 0 21 21" role="img" aria-label="Sample QR code"></svg></div><b>Hodan Warsame</b><p class="exp" style="margin:4px 0 0">Sample code. The real one holds a secure, expiring reference, never your balance or internal IDs.</p></div>
+  <div class="list"><div class="tx"><div class="who"><small>Phone</small><b class="num">+31 6 0000 0000</b></div></div><div class="tx"><div class="who"><small>AMANAH tag</small><b class="num">@NLWA48201735</b></div></div></div>
+  <button class="cta" data-soon>Share details</button>
+  <h2 style="margin-top:18px">Money you received</h2>
+  <div class="list" id="inList"></div>
+</section>
+
+<section class="scr" id="wallet" aria-label="Wallet" hidden>
+  <div class="fx" aria-hidden="true"><div class="goo"><b></b><b></b><b></b></div></div>
+  <div class="top"><b style="font-size:22px">Wallet</b></div>
+  <div class="hero2"><div class="whead"><button class="cur" id="wCurBtn" aria-haspopup="dialog" aria-label="Currency. Change currency"><span id="wCurCode">USD</span> <span aria-hidden="true">▾</span></button></div><div class="big num" id="wBal">$1,284.50</div></div>
+  
+  <button class="cta" data-go="topup">Top up wallet</button>
+  <h2 style="margin-top:16px">Statements</h2>
+  <div class="list"><div class="tx"><div class="who"><b>October 2026</b><small>Statement for your USD wallet</small></div><button class="link" data-soon>Download</button></div></div>
+  <h2 style="margin-top:18px">Latest transactions</h2>
+  <div class="list" id="wList"></div>
+  <button class="cta ghost" data-go="activity">See all activity</button>
+</section>
+
+<section class="scr" id="activity" aria-label="Activity" hidden>
+  <div class="top"><b style="font-size:22px">Activity</b></div>
+  <div class="chips" role="group" aria-label="Filter activity"><button class="chip" aria-pressed="true" data-f="All">All</button><button class="chip" aria-pressed="false" data-f="Sent">Sent</button><button class="chip" aria-pressed="false" data-f="Received">Received</button><button class="chip" aria-pressed="false" data-f="Internal">Internal</button></div>
+  <div class="list" id="aList"></div>
+</section>
+
+<section class="scr" id="ob" aria-label="Onboarding" hidden>
+  <div class="fx" aria-hidden="true"><div class="goo"><b></b><b></b><b></b></div></div>
+  <div class="top"><span class="ava" aria-hidden="true">A</span><b>AMANAH</b><div class="sp"></div><button class="link" data-go="home">Exit preview</button></div>
+  <div class="obs" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div data-ob="1">
+    <h1>Your money. Your people. Your trust.</h1><p class="sub">Send, receive and keep USD with the people who matter.</p>
+    <fieldset style="border:0;padding:0;margin:0"><legend class="sub">Choose your language</legend>
+      <label class="opt"><input type="radio" name="lg" checked><b>English</b></label>
+      <label class="opt"><input type="radio" name="lg"><b>Soomaali</b></label></fieldset>
+    <p class="exp">Somali text will be written and checked by a native speaker before launch. This preview shows English only.</p>
+    <button class="cta" data-obgo="2">Create account</button>
+  </div>
+  <div data-ob="2" hidden>
+    <h1>Verify your phone</h1><p class="sub">We’ll text you a 6-digit code.</p>
+    <label class="f" for="ph">Phone number</label>
+    <input class="amt" style="font-size:20px;min-height:56px" id="ph" type="tel" autocomplete="tel" placeholder="+31 6 1234 5678…">
+    <div id="codeWrap" hidden><label class="f" for="code" style="margin-top:12px">6-digit code</label>
+    <input class="amt num" style="font-size:24px;min-height:56px" id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456…"></div>
+    <p class="err" id="obErr" role="alert"></p>
+    <button class="cta" id="obNext">Send code</button>
+    <p class="exp">Preview: any 6 digits work.</p>
+  </div>
+  <div data-ob="3" hidden>
+    <h1>Tell us about you</h1><p class="sub">The law requires us to confirm who our customers are. Use your name exactly as it appears on your ID.</p>
+    <label class="f" for="fn">Legal first name</label><input class="fld" id="fn" autocomplete="given-name" data-req>
+    <label class="f" for="ln">Legal last name</label><input class="fld" id="ln" autocomplete="family-name" data-req>
+    <label class="f" for="dob">Date of birth</label><input class="fld" id="dob" type="text" readonly placeholder="Choose your date of birth" autocomplete="bday" aria-haspopup="dialog" data-req>
+    <label class="f" for="nat">Nationality</label><select class="fld" id="nat" data-opts="NA" data-req></select>
+    <label class="f" for="rc">Country where you live</label><select class="fld" id="rc" data-opts="C" data-req></select>
+    <p class="err" role="alert"></p><button class="cta" data-obnext="4">Continue</button><button class="link" data-obgo="2">Back</button>
+  </div>
+  <div data-ob="4" hidden>
+    <h1>Where do you live?</h1><p class="sub">This must be your current home address. We may ask for proof later.</p>
+    <label class="f" for="st">Street and number</label><input class="fld" id="st" autocomplete="street-address" data-req>
+    <label class="f" for="ct">City</label><input class="fld" id="ct" autocomplete="address-level2" data-req>
+    <label class="f" for="pc">Postcode</label><input class="fld" id="pc" autocomplete="postal-code" data-req>
+    <p class="err" role="alert"></p><button class="cta" data-obnext="5">Continue</button><button class="link" data-obgo="3">Back</button>
+  </div>
+  <div data-ob="5" hidden>
+    <h1>About your account</h1><p class="sub">Financial rules require these answers. They help us keep AMANAH safe for everyone.</p>
+    <label class="f" for="pp">What will you mainly use AMANAH for?</label><select class="fld" id="pp" data-opts="PP" data-req></select>
+    <label class="f" for="mv">How much do you expect to move each month?</label><select class="fld" id="mv" data-opts="MV" data-req></select>
+    <label class="f" for="sf">Where does your money come from?</label><select class="fld" id="sf" data-opts="SF" data-req></select>
+    <label class="f" for="em">Work status</label><select class="fld" id="em" data-opts="EM" data-req></select>
+    <label class="f" for="pep">Do you or a close family member hold a senior public role (a PEP)?</label><select class="fld" id="pep" data-opts="YN" data-req></select>
+    <label class="f" for="tp">Will you send money on behalf of someone else?</label><select class="fld" id="tp" data-opts="YN" data-req></select>
+    <p class="err" role="alert"></p><button class="cta" data-obnext="6">Continue</button><button class="link" data-obgo="4">Back</button>
+  </div>
+  <div data-ob="6" hidden>
+    <h1>Verify your ID</h1><p class="sub">Choose a document. Use a flat surface and good light, with all four corners in view.</p>
+    <fieldset style="border:0;padding:0;margin:0"><legend class="sr" style="position:absolute;left:-999px">Document type</legend>
+      <label class="opt"><input type="radio" name="idt" value="Passport" checked><b>Passport</b></label>
+      <label class="opt"><input type="radio" name="idt" value="National ID card"><b>National ID card</b></label>
+      <label class="opt"><input type="radio" name="idt" value="Residence permit"><b>Residence permit</b></label></fieldset>
+    <input type="hidden" id="idFront" data-req><input type="hidden" id="idBack">
+    <button class="cta ghost" data-fake="idFront" data-done="Front added">Photograph the front</button>
+    <button class="cta ghost" data-fake="idBack" data-done="Back added">Photograph the back (not needed for a passport)</button>
+    <label class="chk"><input type="checkbox" id="bio" data-req><span>I agree that AMANAH and its identity-check partner may process my ID and face scan to verify who I am.</span></label>
+    <p class="err" role="alert"></p><button class="cta" data-obnext="7">Continue</button><button class="link" data-obgo="5">Back</button>
+  </div>
+  <div data-ob="7" hidden class="done">
+    <div style="width:140px;height:140px;border-radius:50%;margin:10px auto 16px;border:3px dashed var(--em);display:grid;place-items:center;font-size:48px" aria-hidden="true">☺</div>
+    <h1>Quick face check</h1><p class="sub">We compare your face to your ID to make sure it’s really you. Look straight ahead and follow the on-screen prompts.</p>
+    <input type="hidden" id="face" data-req>
+    <button class="cta ghost" data-fake="face" data-done="Face check complete (preview)">Start face check</button>
+    <p class="err" role="alert"></p><button class="cta" data-obnext="8">Continue</button><button class="link" data-obgo="6">Back</button>
+  </div>
+  <div data-ob="8" hidden>
+    <h1>Check and submit</h1><p class="sub">Make sure everything is correct. Wrong details can delay your verification.</p>
+    <div class="glass sum" id="obSum"></div>
+    <p class="hint" style="margin-top:12px"><b>What happens next:</b> we check your ID, and screen against sanctions and public-role lists. We may ask for more information. You can’t send or receive money until you’re verified.</p>
+    <label class="chk"><input type="checkbox" data-req><span>My details are true and complete.</span></label>
+    <label class="chk"><input type="checkbox" data-req><span>I accept the Terms and Privacy Notice (final legal text pending).</span></label>
+    <label class="chk"><input type="checkbox" data-req><span>I’ll tell AMANAH if my details change.</span></label>
+    <p class="err" role="alert"></p><button class="cta" data-obnext="9">Submit for verification</button><button class="link" data-obgo="7">Back</button>
+  </div>
+  <div data-ob="9" hidden class="done">
+    <div class="ic" id="kIc" aria-hidden="true"></div><h1 id="kT"></h1><p class="sub" id="kD"></p>
+    <div class="chips" role="group" aria-label="Preview verification result" style="justify-content:center"><button class="chip" aria-pressed="true" data-k="pending">Pending</button><button class="chip" aria-pressed="false" data-k="approved">Approved</button><button class="chip" aria-pressed="false" data-k="rejected">Rejected</button><button class="chip" aria-pressed="false" data-k="moreinfo">More info</button></div>
+    <button class="cta" data-go="home" id="kBtn"></button>
+  </div>
+</section>
+
+<section class="scr" id="topup" aria-label="Top up" hidden>
+  <div class="top"><button class="ib" id="tuBack" aria-label="Go back">←</button><b>Top up</b></div>
+  <div data-tu="1">
+    <h1>Add money</h1><p class="sub">Choose how you want to pay and in which currency.</p>
+    <fieldset style="border:0;padding:0;margin:0 0 12px"><legend class="sub" style="margin-bottom:8px">Payment method</legend>
+      
+      <label class="opt"><input type="radio" name="mth" value="card" checked><span><b>Debit or credit card</b><br><small style="color:var(--muted)">A card fee applies.</small></span></label></fieldset>
+    <p class="exp" id="tuWal"></p><fieldset hidden style="border:0;padding:0;margin:0"><legend class="sr" style="position:absolute;left:-999px">Currency</legend>
+      
+      
+      
+    </fieldset>
+    <button class="cta" id="tu1">Continue</button>
+  </div>
+  <div data-tu="2" hidden>
+    <div class="fx" aria-hidden="true"><div class="goo"><b></b><b></b><b></b></div></div>
+    <div class="tuhead"><button class="cur" id="tuCur" aria-haspopup="dialog" aria-label="Currency. Change currency"><span id="tuCurCode">USD</span> <span aria-hidden="true">▾</span></button></div>
+    <h1 style="text-align:center">Top up your wallet</h1><p class="sub" style="text-align:center">Choose a currency and an amount. The money is added to that wallet.</p>
+    <label class="f" for="tuAmt" id="tuLbl" style="text-align:center">Amount</label>
+    <div class="glass gp"><input class="gamt num" id="tuAmt" inputmode="decimal" autocomplete="off" placeholder="0.00" aria-describedby="tuErr"></div>
+    <div class="qchips" role="group" aria-label="Quick amounts"><button class="chip" data-q="50">50</button><button class="chip" data-q="100">100</button><button class="chip" data-q="250">250</button><button class="chip" data-q="500">500</button></div>
+    <div class="glass sum" style="margin-top:12px"><div class="r"><span>Added to</span><b id="tuTo">USD wallet</b></div><div class="r"><span>Card fee</span><b>1.5% (sample)</b></div><div class="r"><span>Limit per top-up</span><b class="num" id="tuLim">10,000.00</b></div></div>
+    <p class="err" id="tuErr" role="alert"></p>
+    <button class="cta" id="tu2">Continue to card details</button>
+  </div>
+  <div data-tu="3" hidden>
+    <h1>Make this bank transfer</h1><p class="sub">Use your own banking app. Copy these details exactly.</p>
+    <div class="glass sum" id="tuDet"></div>
+    <p class="exp">Send from an account in your own name. Payments from someone else’s account may be held for review or returned.</p>
+    <button class="cta" id="tu3">I’ve sent the money</button>
+  </div>
+  <div data-tu="7" hidden id="tuCard">
+    <h1 id="cdH">Pay by card</h1><p class="sub">Your card is charged once you approve the payment with your bank.</p>
+    <div class="glass sum" id="cdSum"></div>
+    <fieldset id="cdSaved" style="border:0;padding:0;margin:14px 0 0"></fieldset>
+    <div id="cdFull" style="margin-top:14px">
+      <label class="f" for="cn">Card number</label><input class="fld num" id="cn" inputmode="numeric" autocomplete="cc-number" maxlength="23" placeholder="1234 5678 9012 3456">
+      <label class="f" for="cnm">Name on card</label><input class="fld" id="cnm" autocomplete="cc-name">
+      <label class="f" for="cex">Expiry date</label><input class="fld num" id="cex" inputmode="numeric" autocomplete="cc-exp" maxlength="5" placeholder="MM/YY">
+    </div>
+    <label class="f" for="ccv">Security code</label><input class="fld num" id="ccv" inputmode="numeric" autocomplete="cc-csc" maxlength="4" placeholder="3 digits on the back">
+    <label class="chk" id="cdSaveWrap"><input type="checkbox" id="csv"><span>Save this card for faster top-ups. We keep only the last 4 digits, never the full number or security code.</span></label>
+    <p class="err" id="cdErr" role="alert"></p>
+    <button class="cta" id="cdPay">Pay</button>
+    <p class="exp">Preview only. Don’t enter a real card. Test number: 4242 4242 4242 4242, any future date, any 3 digits. In the real app, card details go straight to our payment provider and never to AMANAH’s servers.</p>
+  </div>
+  <div data-tu="8" hidden class="done">
+    <div class="ic" aria-hidden="true">🔒</div><h1>Confirm with your bank</h1><p class="sub">Your bank may ask you to approve this payment, usually in its app. It’s an extra security step.</p>
+    <button class="cta" id="cdOk">Preview only: simulate approval</button>
+    <button class="cta ghost" id="cdNo">Cancel payment</button>
+  </div>
+  <div data-tu="4" hidden>
+    <h1>Waiting for your transfer</h1><p class="sub">Arrival time depends on your bank. We’ll notify you the moment it lands.</p>
+    <div class="list"><div class="tx"><span class="ava ok" aria-hidden="true">✓</span><div class="who"><b>Transfer reported</b></div></div><div class="tx"><span class="ava" aria-hidden="true">⏳</span><div class="who"><b>Money arrives at AMANAH</b><small>Waiting…</small></div></div><div class="tx"><span class="ava" aria-hidden="true">3</span><div class="who"><b>Money is added to your wallet</b></div></div></div>
+    <button class="cta ghost" id="tuArrive">Preview only: simulate money arriving</button>
+    <button class="cta ghost" data-go="home">Back to home</button>
+  </div>
+  <div data-tu="5" hidden>
+    <h1>Your money arrived</h1><p class="sub">Review the rate. Nothing converts until you confirm.</p>
+    <div class="glass sum" id="tuQ"></div>
+    <p class="exp" id="tuExp" aria-live="polite"></p>
+    <button class="cta" id="tuConv">Convert to USD</button>
+    <button class="cta ghost" id="tuNew" hidden>Get a new rate</button>
+  </div>
+  <div data-tu="6" hidden class="done">
+    <div class="fx" aria-hidden="true"><div class="goo"><b></b><b></b><b></b></div></div>
+    <div class="ic" aria-hidden="true">✓</div><h1 id="tuDone"></h1><p class="sub">Your wallet is updated. Your receipt is in Activity.</p><p class="exp num">Reference AMN-PREVIEW-TU-0001</p>
+    <button class="cta" data-go="wallet">View wallet</button>
+  </div>
+</section>
+
+<section class="scr" id="profile" aria-label="Profile" hidden>
+  <div class="top"><b style="font-size:22px">Profile</b></div>
+  <div class="glass" style="padding:20px;text-align:center;margin-bottom:14px">
+    <div class="ava pfava" aria-hidden="true">HW</div>
+    <b style="font-size:20px">Hodan Warsame</b>
+    <p class="exp" style="margin:4px 0 12px">Identity check in review</p>
+    <button class="cta ghost" data-pick="HW" style="margin:0">Change photo</button>
+    <input type="file" id="pfFile" accept="image/*" hidden>
+  </div>
+  <h2>Your details</h2>
+  <div class="list"><div class="tx"><div class="who"><small>Phone</small><b class="num">+31 6 0000 0000</b></div></div><div class="tx"><div class="who"><small>Email</small><b>hodan@example.com</b></div></div><div class="tx"><div class="who"><small>AMANAH tag</small><b class="num">@NLWA48201735</b></div></div></div>
+  <h2 style="margin-top:18px">Recipients</h2>
+  <div class="list">
+    <div id="prList"></div>
+    
+    
+  </div>
+  <p class="note">Photos stay on this device in the preview. In the real app they upload securely, and you need the person’s permission to use their photo.</p>
+  <h2 style="margin-top:18px">Saved cards</h2>
+  <div class="list" id="cardList"></div>
+  <button class="cta ghost" id="addCardBtn">Add a card</button>
+  <h2 style="margin-top:18px">Settings</h2>
+  <div class="list">
+    <button class="tx rowbtn" data-go="security"><span class="who"><b>Security</b></span><span aria-hidden="true">›</span></button>
+    <button class="tx rowbtn" data-go="limits"><span class="who"><b>Limits</b></span><span aria-hidden="true">›</span></button>
+    <button class="tx rowbtn" data-go="language"><span class="who"><b>Language</b></span><span aria-hidden="true">›</span></button>
+    <button class="tx rowbtn" data-go="support"><span class="who"><b>Support</b></span><span aria-hidden="true">›</span></button>
+  </div>
+</section>
+
+
+
+<section class="scr" id="convertOld" aria-label="Old transfer page" hidden>
+  <div class="top"><button class="ib" data-go="home" aria-label="Go back">←</button><b>Transfer</b></div>
+  <h1>Convert between wallets</h1><p class="sub">Move money from one currency to another. You see the rate and fee before you confirm.</p>
+  <label class="f" for="cvFrom">From</label><select class="fld" id="cvFrom"></select>
+  <label class="f" for="cvAmt">Amount</label><input class="amt num" id="cvAmt" inputmode="decimal" autocomplete="off" placeholder="100.00…">
+  <button class="ib" id="cvSwap" aria-label="Swap the two currencies" style="margin:10px auto;display:block">⇅</button>
+  <label class="f" for="cvTo">To</label><select class="fld" id="cvTo"></select>
+  <p class="err" id="cvErr" role="alert"></p>
+  <div class="glass sum" id="cvQ" hidden></div>
+  <p class="exp" id="cvExp" aria-live="polite"></p>
+  <button class="cta" id="cvGo" hidden>Convert</button>
+  <button class="cta ghost" id="cvNew" hidden>Get a new rate</button>
+  <p class="exp" id="cvDone" role="status"></p>
+</section>
+
+<section class="scr" id="addrec" aria-label="Add recipient" hidden>
+  <div class="top"><button class="ib" data-go="send" aria-label="Go back">←</button><b>Add recipient</b></div>
+  <h1>Add a recipient</h1><p class="sub">Ask them for their AMANAH tag. It looks like @SOAB12345678.</p>
+  <div style="text-align:center;margin-bottom:12px"><div class="ava pfava" data-k="NEW" aria-hidden="true"></div><button class="cta ghost" data-pick="NEW" style="margin:0">Add a photo</button></div>
+  <label class="f" for="arf">First name</label><input class="fld" id="arf" autocomplete="off">
+  <label class="f" for="arl">Family name</label><input class="fld" id="arl" autocomplete="off">
+  <label class="f" for="art">AMANAH tag</label><input class="fld num" id="art" autocomplete="off" autocapitalize="characters" placeholder="@SOAB12345678" maxlength="13">
+  <p class="err" id="arErr" role="alert"></p>
+  <button class="cta" id="arSave">Save recipient</button>
+  <p class="exp">Preview: any correctly formatted tag is accepted. The real app checks that the tag exists and shows the name on the account before you send.</p>
+</section>
+
+<section class="scr" id="pin" aria-label="PIN" hidden>
+  <div class="fx" aria-hidden="true"><div class="goo"><b></b><b></b><b></b></div></div>
+  <div class="pinwrap">
+    <div class="ava pfava" id="pinAva" data-k="HW" aria-hidden="true"></div>
+    <h1 id="pinT">Enter your PIN</h1><p class="sub" id="pinS"></p>
+    <div class="dots" id="dots" role="img" aria-label="0 of 6 digits entered"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <p class="err" id="pinErr" role="alert"></p>
+    <div class="pad" id="pad"></div>
+    <button class="link" id="pinAlt">Forgot your PIN?</button>
+    <button class="link" id="pinCancel" hidden>Cancel</button>
+  </div>
+</section>
+
+<section class="scr" id="convert" aria-label="Transfer" hidden>
+  <div class="top"><button class="ib" data-go="home" aria-label="Go back">←</button><b style="flex:1;text-align:center;font-size:20px">Transfer</b><span style="width:44px" aria-hidden="true"></span></div>
+  <div class="xfrom"><button class="cur" id="xFromBtn" aria-haspopup="dialog"><i class="dot" aria-hidden="true"></i>From: <b id="xFromTxt">USD wallet</b> <span aria-hidden="true">▾</span></button></div>
+  <div class="glass xcard">
+    <div class="xrow"><span>YOU SEND</span><span class="xs">Available: <b class="num" id="xAvail"></b></span></div>
+    <div class="xmain"><span class="sym" id="xSymF">$</span><input class="xamt num" id="xAmt" inputmode="decimal" autocomplete="off" placeholder="0.00" aria-label="Amount you send"><button class="cur xcur" id="xFromCur" aria-label="Change the currency you send"><span id="xFromCode">USD</span> <span aria-hidden="true">▾</span></button></div>
+    <div class="xfoot"><span><span aria-hidden="true">✓</span> Fee shown before you confirm</span><span>Between your own wallets</span></div>
+  </div>
+  <div class="xswap"><button class="xpill" id="xSwap" aria-label="Swap the two currencies"><span aria-hidden="true">⇅</span><i class="dot" aria-hidden="true"></i><span id="xRate" class="num"></span><span id="xTimer" class="num"></span></button></div>
+  <div class="glass xcard">
+    <div class="xrow"><span>YOU RECEIVE</span><span class="xs">Rate locked for 60 seconds</span></div>
+    <div class="xmain"><div class="xout num" id="xOut" aria-live="polite">0.00</div><button class="cur xcur" id="xToCur" aria-label="Change the currency you receive"><span id="xToCode">EUR</span> <span aria-hidden="true">▾</span></button></div>
+    <div class="xfoot"><span>Destination: <b id="xDest">EUR wallet</b></span><span>Sample rate, not live</span></div>
+  </div>
+  <p class="xl" style="margin:16px 2px 8px">QUICK AMOUNTS</p>
+  <div class="qchips" id="xQ" role="group" aria-label="Quick amounts" style="justify-content:flex-start"><button class="chip" data-x="100">100</button><button class="chip" data-x="250">250</button><button class="chip" data-x="500">500</button><button class="chip" data-x="1000">1,000</button><button class="chip" data-x="max">Max</button></div>
+  <div class="glass xbd">
+    <h3><span>EXCHANGE BREAKDOWN</span><span class="bg">Sample rates</span></h3>
+    <div class="r"><span>Exchange rate</span><b class="num" id="xRate2">–</b></div>
+    <div class="r"><span>AMANAH fee</span><b class="num" id="xFee">–</b></div>
+    <div class="r"><span>Rate valid for</span><b class="num" id="xValid">–</b></div>
+    <div class="r"><span>Estimated delivery</span><b>Immediately (sample)</b></div>
+  </div>
+  <p class="err" id="xErr" role="alert"></p>
+  <button class="cta xgo" id="xGo" disabled>Enter an amount</button>
+  <p class="xnote"><span aria-hidden="true">🔒</span> You see the rate and fee before you confirm. Rates here are samples.</p>
+  <p class="exp" id="xDone" role="status"></p>
+</section>
+
+<dialog id="xcSheet" class="pop" aria-labelledby="xcT"><h2 id="xcT" style="font-size:18px">Choose currency</h2><div id="xcList"></div><button class="cta ghost" id="xcX">Close</button></dialog>
+
+<section class="scr" id="security" aria-label="Security" hidden>
+  <div class="top"><button class="ib" data-go="profile" aria-label="Go back">←</button><b>Security</b></div>
+  <h1>Keep your account safe</h1><p class="sub">Choose how AMANAH protects your money. Preview: these settings are saved on this device only.</p>
+  <div class="list">
+    <button class="tx rowbtn" id="secPin"><span class="who"><b>Change PIN</b><small>You’ll enter your current PIN first.</small></span><span aria-hidden="true">›</span></button>
+    <button class="tx rowbtn" role="switch" aria-checked="false" data-set="bio"><span class="who"><b>Face ID or fingerprint</b><small>Open AMANAH without typing your PIN. Preview only: not connected to your phone yet.</small></span><i class="swv" aria-hidden="true"></i></button>
+    <button class="tx rowbtn" role="switch" aria-checked="true" data-set="alerts"><span class="who"><b>Sign-in alerts</b><small>Get a notification when a new device signs in.</small></span><i class="swv" aria-hidden="true"></i></button>
+  </div>
+  <label class="f" for="setLock" style="margin-top:16px">Lock the app after</label>
+  <select class="fld" id="setLock"><option value="60">1 minute without use</option><option value="300">5 minutes without use</option><option value="900">15 minutes without use</option></select>
+  <h2 style="margin-top:16px">Devices signed in</h2>
+  <div class="list" id="devList"></div>
+  <p class="note">Sample devices. In the real app this list comes from your account.</p>
+  <h2 style="margin-top:16px">Stay safe</h2>
+  <div class="glass sum" style="padding:8px 16px">
+    <p class="exp">AMANAH will never ask for your PIN, password or full card number, by phone, message or email.</p>
+    <p class="exp">Never share the code we text you, even with someone who says they work for AMANAH.</p>
+    <p class="exp">Check the name and @tag before you send money.</p>
+  </div>
+</section>
+
+<section class="scr" id="limits" aria-label="Limits" hidden>
+  <div class="top"><button class="ib" data-go="profile" aria-label="Go back">←</button><b>Limits</b></div>
+  <h1>Your limits</h1><p class="sub">Limits protect you and help us follow financial rules. The amounts here are samples for this preview.</p>
+  <h2>What you’ve used</h2>
+  <div class="list" id="limUse" style="padding:4px 16px"></div>
+  <h2 style="margin-top:16px">Limits that apply</h2>
+  <div class="glass sum" id="limFix"></div>
+  <p class="note">Transfers in other currencies count in US dollars at the sample rate. Top-up limits are in the currency you top up. Your real limits will depend on your verification level.</p>
+  <button class="cta ghost" id="limMore">Ask for a higher limit</button>
+</section>
+
+<section class="scr" id="language" aria-label="Language" hidden>
+  <div class="top"><button class="ib" data-go="profile" aria-label="Go back">←</button><b>Language</b></div>
+  <h1>Language</h1><p class="sub">Choose the language for AMANAH.</p>
+  <div role="group" aria-label="Language" id="langList"></div>
+  <p class="exp" id="langNote" role="status"></p>
+  <div class="glass sum" style="margin-top:12px"><div class="r"><span>Time zone</span><b id="tzV"></b></div><div class="r"><span>Date and time now</span><b id="dtV"></b></div></div>
+  <p class="exp">Times are shown in your phone’s time zone.</p>
+</section>
+
+<section class="scr" id="support" aria-label="Support" hidden>
+  <div class="top"><button class="ib" data-go="profile" aria-label="Go back">←</button><b>Support</b></div>
+  <h1>How can we help?</h1><p class="sub">Never share your PIN, password or full card number. AMANAH will never ask for them.</p>
+  <div class="list"><a class="tx rowbtn" href="mailto:info@amanah-bank.com?subject=AMANAH%20support"><span class="who"><b>Email us</b><small>info@amanah-bank.com</small></span><span aria-hidden="true">›</span></a></div>
+  <h2 style="margin-top:18px">Common questions</h2>
+  <details class="glass faq"><summary>Why is my transfer still processing?</summary><p>We’re moving your money and running safety checks. You’ll get a notification when it finishes. If it stays in Processing or Under review longer than you expect, send us a request below with the reference number from the transfer details.</p></details>
+  <details class="glass faq"><summary>Why can’t I send money yet?</summary><p>Sending unlocks once your identity check is approved. You can see the status on Home. If we need more from you, we’ll tell you what and why.</p></details>
+  <details class="glass faq"><summary>Where do I see fees and the exchange rate?</summary><p>On the review screen, before you confirm. Nothing is sent until you confirm. Quotes and rates expire after a short time, and you’ll need to get a new one.</p></details>
+  <details class="glass faq"><summary>I lost my phone. What do I do?</summary><p>Contact us straight away so we can secure your account. If you’re still signed in on another device, you can sign the lost one out under Security.</p></details>
+  <h2 style="margin-top:18px">Send us a request</h2>
+  <label class="f" for="supCat">Topic</label>
+  <select class="fld" id="supCat"><option>A transfer</option><option>Top-up or card</option><option>My identity check</option><option>My account or PIN</option><option>A higher limit</option><option>Something suspicious</option><option>Something else</option></select>
+  <label class="f" for="supMsg">What happened?</label>
+  <textarea class="fld" id="supMsg" maxlength="800" placeholder="Tell us what you expected and what you saw…"></textarea>
+  <p class="hint">Don’t include your PIN, password or full card number. Preview: requests stay on this device and aren’t sent to anyone.</p>
+  <p class="err" id="supErr" role="alert"></p>
+  <button class="cta" id="supSend">Send request</button>
+  <h2 style="margin-top:18px">Your requests</h2>
+  <div class="list" id="supList"></div>
+</section>
+
+<dialog id="calSheet" class="pop cal" aria-labelledby="calT"><h2 id="calT" style="font-size:18px">Date of birth</h2>
+<div class="hd"><select class="fld" id="calM" aria-label="Month"></select><select class="fld" id="calY" aria-label="Year"></select></div>
+<div class="dw" aria-hidden="true"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div><div class="dg" id="calG"></div>
+<button class="cta ghost" id="calX" style="background:var(--glass);border:1px solid var(--edge);color:var(--text)">Cancel</button></dialog>
+
+<dialog id="curSheet" class="pop" aria-labelledby="curT"><h2 id="curT" style="font-size:18px">Choose currency</h2>
+<div role="group" aria-label="Currency">
+<div id="curList"></div>
+
+
+
+<p class="exp">Each currency is its own balance. Converting between them shows the rate and fee first. Rates in this preview are samples, not live.</p>
+<button class="cta ghost" id="curX">Close</button></dialog>
+<dialog id="nsheet" class="pop" aria-labelledby="nT"><h2 id="nT" style="font-size:20px">Notifications</h2><div id="nList"></div><button class="cta ghost" id="nX">Close</button></dialog>
+
+<dialog id="sheet" class="pop" aria-labelledby="shT"><h2 id="shT" style="font-size:20px"></h2><div id="shB"></div><button class="cta" data-soon>Get receipt</button><button class="cta ghost" id="shX">Close</button></dialog>
+
+<nav class="glass" aria-label="Primary">
+  <button data-go="home" aria-current="page"><span aria-hidden="true">⌂</span>Home</button>
+  <button data-go="send"><span aria-hidden="true">↗</span>Transfers</button>
+  <button data-go="wallet"><span aria-hidden="true">▣</span>Wallet</button>
+  <button data-go="activity"><span aria-hidden="true">≡</span>Activity</button>
+  <button data-go="profile"><span aria-hidden="true">☺</span>Profile</button>
+</nav>
+<div class="toast glass" id="toast" role="status" aria-live="polite"></div>
+</div></div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const usd=c=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(c/100);
+const AVAILABLE=118450; // cents
+let step=1, cents=0, tick=null, left=0;
+function view(id){
+  $$('.scr').forEach(s=>s.hidden=s.id!==id); document.querySelector('nav').hidden=(id==='ob'||id==='pin'); if(id==='ob') obStep(1);
+  
+  $$('nav button[data-go]').forEach(b=>{ if(b.dataset.go===(({receive:'send',topup:'wallet',convert:'send',security:'profile',limits:'profile',language:'profile',support:'profile'})[id]||id)) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current')});
+  document.title=({home:'Home',send:'Send money',receive:'Receive money',wallet:'Wallet',activity:'Activity',ob:'Welcome',topup:'Top up',profile:'Profile',convert:'Transfer',pin:'Enter PIN',addrec:'Add recipient',security:'Security',limits:'Limits',language:'Language',support:'Support'}[id])+' – AMANAH';
+  if(id==='send') setStep(1); (document.querySelector('.phone').scrollTop=0,window.scrollTo(0,0));
+  try{clearInterval(tick);clearInterval(cvT);clearInterval(xTimer);clearInterval(TU&&TU.t)}catch(e){}
+}
+function setStep(n){
+  step=n; $$('[data-step]').forEach(e=>e.hidden=+e.dataset.step!==n);
+  $$('.steps i').forEach((i,k)=>i.classList.toggle('on',k<Math.min(n,3)));
+  if(n!==3) clearInterval(tick);
+}
+let tt; function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2400)}
+$$('[data-go]').forEach(b=>b.addEventListener('click',()=>view(b.dataset.go)));
+$$('[data-soon]').forEach(b=>b.addEventListener('click',()=>toast('This screen is designed in the next milestone.')));
+$('#back').addEventListener('click',()=>step>1&&step<4?setStep(step-1):view('home'));
+$('#to2').addEventListener('click',()=>{setStep(2);$('#amount').focus()});
+$('#to3').addEventListener('click',()=>{
+  const raw=$('#amount').value.trim().replace(',','.'), n=Number(raw), err=$('#err');
+  if(!raw||!isFinite(n)||n<=0){err.textContent='Enter an amount above $0, for example 500.00.';return}
+  cents=Math.round(n*100);
+  const fee=quote(cents);
+  if(fee.total>BAL[CUR]){err.textContent='Amount plus fees ('+fm(fee.total,CUR)+') is more than your available balance of '+fm(BAL[CUR],CUR)+'.';return}
+  err.textContent=''; showQuote(); setStep(3);
+});
+// Sample fee rule for the preview only: 1.5% AMANAH fee, min $1.00, plus $0.40 provider charge. Real rules come from the fee engine.
+function quote(c){const amanah=Math.max(100,Math.round(c*0.015)),provider=40;return{amanah,provider,total:c+amanah+provider}}
+function showQuote(){
+  const q=quote(cents), who=document.querySelector('input[name=rc]:checked').value;
+  $('#sum').innerHTML=[
+   ['Recipient',who+' · '+((recFind(r=>r.name===who)||{}).tag||'')],['Amount sent',usd(cents)],['Provider charges',usd(q.provider)],['AMANAH fee',usd(q.amanah)],
+   ['Conversion','None. Wallet to wallet in USD'],['Conversion charges',usd(0)],['They receive',usd(cents)]
+  ].map(r=>`<div class="r"><span>${r[0]}</span><b class="num">${r[1]}</b></div>`).join('')+
+  `<div class="r tot"><span>Total charged</span><b class="num">${usd(q.total)}</b></div>`;
+  left=300; $('#confirm').hidden=false; $('#requote').hidden=true; clearInterval(tick); paint();
+  tick=setInterval(()=>{left--;paint();if(left<=0){clearInterval(tick);$('#confirm').hidden=true;$('#requote').hidden=false;$('#exp').textContent='This quote expired. Get a new quote to continue.'}},1000);
+}
+function paint(){ if(left>0){const m=Math.floor(left/60),s=String(left%60).padStart(2,'0');$('#exp').textContent=`Quote valid for ${m}:${s}`} }
+$('#requote').addEventListener('click',showQuote);
+$('#confirm').addEventListener('click',e=>{
+  const b=e.target; b.disabled=true; b.textContent='Confirming…';
+  setTimeout(()=>{b.disabled=false;b.textContent='Confirm with Face ID';
+    const who=document.querySelector('input[name=rc]:checked').value;
+    $('#doneText').textContent=`We’re processing ${fm(cents,CUR)} to ${who}. We’ll notify you when it completes.`;
+    $('#ref').textContent='Reference AMN-PREVIEW-0001'; setStep(4);},900);
+});
+$('#finish').addEventListener('click',()=>view('home'));
+const TX=[
+ {n:'Ayaan Abdi',t:'Sent',a:-10000,d:'28 Oct 2026',s:'Processing',r:'AMN-PRV-0007',f:190},
+ {n:'Mahad Hassan',t:'Received',a:4500,d:'24 Oct 2026',s:'Completed',r:'AMN-PRV-0006',f:0},
+ {n:'Fartun Ali',t:'Internal',a:-2500,d:'21 Oct 2026',s:'Completed',r:'AMN-PRV-0005',f:0},
+ {n:'Ayaan Abdi',t:'Sent',a:-30000,d:'15 Oct 2026',s:'Under review',r:'AMN-PRV-0004',f:490},
+ {n:'Mahad Hassan',t:'Sent',a:-5000,d:'09 Oct 2026',s:'Failed',r:'AMN-PRV-0003',f:0},
+ {n:'Fartun Ali',t:'Sent',a:-7500,d:'02 Oct 2026',s:'Reversed',r:'AMN-PRV-0002',f:0},
+ {n:'Bank top-up (EUR)',t:'Received',a:21600,d:'18 Oct 2026',s:'Completed',r:'AMN-PRV-0001',f:108}];
+const WHY={Completed:'The money has arrived.',Processing:'We’re moving this money now. We’ll notify you when it finishes.',Pending:'Waiting for the next step.','Under review':'This transfer is in a safety check. We’ll update you here.',Failed:'This transfer didn’t go through.',Reversed:'This transfer was returned to your wallet.'};
+const cls=s=>s==='Completed'?'ok':(s==='Failed'||s==='Reversed')?'bad':'pend';
+const ini=n=>n.split(' ').map(w=>w[0]).join('');
+function rows(list,el){el.innerHTML=list.length?list.map(x=>{const i=TX.indexOf(x);return `<button class="tx rowbtn" data-i="${i}"><span class="ava" aria-hidden="true">${ini(x.n)}</span><span class="who"><b>${x.n}</b><small>${x.t} · ${x.d}</small></span><span style="text-align:right"><b class="num ${x.a>0?'ok':''}">${x.a<0?'−':'+'}${usd(Math.abs(x.a))}</b><br><span class="badge ${cls(x.s)}">${x.s}</span></span></button>`}).join(''):'<p class="exp" style="padding:14px">No transfers of this type yet.</p>';
+ el.querySelectorAll('.rowbtn').forEach(b=>b.addEventListener('click',()=>openSheet(TX[b.dataset.i])))}
+function openSheet(x){$('#shT').textContent=x.n;
+ $('#shB').innerHTML=[['Amount',(x.a<0?'−':'+')+usd(Math.abs(x.a))],['Status',x.s],['Type',x.t],['Fees',usd(x.f)],['Date',x.d],['Reference',x.r]].map(r=>`<div class="r"><span>${r[0]}</span><b class="num">${r[1]}</b></div>`).join('')+`<p class="exp">${WHY[x.s]}</p>`;$('#sheet').showModal()}
+$('#shX').addEventListener('click',()=>$('#sheet').close());
+function drawActivity(f){rows(TX.filter(x=>f==='All'||x.t===f),$('#aList'))}
+$$('.chip[data-f]').forEach(c=>c.addEventListener('click',()=>{$$('.chip[data-f]').forEach(k=>k.setAttribute('aria-pressed',k===c));drawActivity(c.dataset.f)}));
+
+(function(){const fnd=(x,y)=>{for(const[ox,oy]of[[0,0],[14,0],[0,14]]){const a=x-ox,b=y-oy;if(a>=-1&&a<=7&&b>=-1&&b<=7)return(a<0||b<0||a>6||b>6)?0:(a==0||b==0||a==6||b==6||(a>1&&a<5&&b>1&&b<5))?1:0}return-1};let s='';for(let y=0;y<21;y++)for(let x=0;x<21;x++){let v=fnd(x,y);if(v<0)v=((x*7+y*13+x*y)%5<2)?1:0;if(v)s+=`<rect x="${x}" y="${y}" width="1" height="1"/>`}$('#qr').innerHTML=s})();
+function obStep(n){$$('[data-ob]').forEach(e=>e.hidden=+e.dataset.ob!==n);$$('.obs i').forEach((i,k)=>i.classList.toggle('on',k<n));if(n===9)kyc('pending');if(n===8)obReview()}
+$$('[data-obgo]').forEach(b=>b.addEventListener('click',()=>obStep(+b.dataset.obgo)));
+let codeSent=false;
+$('#obNext').addEventListener('click',()=>{const e=$('#obErr');
+ if(!codeSent){if(!/^\+[1-9]\d{7,14}$/.test($('#ph').value.replace(/\s/g,''))){e.textContent='Enter your number with the country code, for example +31 6 1234 5678.';return}
+  e.textContent='';codeSent=true;$('#codeWrap').hidden=false;$('#obNext').textContent='Verify phone';$('#code').focus();return}
+ if(!/^\d{6}$/.test($('#code').value.trim())){e.textContent='Enter the 6 digits from your text message.';return}
+ e.textContent='';codeSent=false;$('#codeWrap').hidden=true;$('#obNext').textContent='Send code';pinStart('create',()=>{view('ob');obStep(3)})});
+const K={pending:['⏳','Verification pending','We’re reviewing your documents. You can add recipients now, but sending stays locked until we verify you.','Go to home'],approved:['✓','You’re verified','Your identity check is complete. Sending is now unlocked.','Start using AMANAH'],rejected:['!','We couldn’t verify you','The photo of your ID was too blurry to read. Upload a clearer photo and we’ll check again.','Upload ID again']};
+function kyc(k){const v=K[k];$('#kIc').textContent=v[0];$('#kT').textContent=v[1];$('#kD').textContent=v[2];$('#kBtn').textContent=v[3];$$('.chip[data-k]').forEach(c=>c.setAttribute('aria-pressed',c.dataset.k===k))}
+$$('.chip[data-k]').forEach(c=>c.addEventListener('click',()=>kyc(c.dataset.k)));
+// ---- Top up (design preview). Rates and fees are samples, not live. Real values come from the provider and the fee engine. ----
+const TU={cur:'EUR',c:0,step:1,left:0,t:null,q:null}, RATE={EUR:1.08,GBP:1.27};
+const money=(c,cur)=>new Intl.NumberFormat('en-IE',{style:'currency',currency:cur}).format(c/100);
+const rowsHtml=a=>a.map(r=>`<div class="r"><span>${r[0]}</span><b class="num">${r[1]}</b></div>`).join('');
+function tuStep(n){TU.step=n;if(n!==5)clearInterval(TU.t);$$('[data-tu]').forEach(e=>e.hidden=+e.dataset.tu!==n);(document.querySelector('.phone').scrollTop=0,window.scrollTo(0,0))}
+$('#tuBack').addEventListener('click',()=>TU.step===7?(TU.reg?view('profile'):tuStep(2)):view('home'));
+$('#tu1').addEventListener('click',()=>{TU.cur=CUR;$('#tuLbl').textContent='Amount in '+TU.cur;tuStep(2);$('#tuAmt').focus()});
+$('#tu2').addEventListener('click',()=>{const n=Number($('#tuAmt').value.trim().replace(',','.')),e=$('#tuErr');
+ if(!isFinite(n)||n<10){e.textContent='Enter at least 10.00 '+TU.cur+', for example 500.00.';return}
+ if(n>10000){e.textContent='The sample limit is 10,000.00 '+TU.cur+' per top-up.';return}
+ e.textContent='';TU.c=Math.round(n*100);
+ $('#tuDet').innerHTML=rowsHtml([['Send exactly',money(TU.c,TU.cur)],['Pay to','Hodan Warsame (AMANAH)'],['Account number (IBAN)','XX00 SAMPLE 0000 0000'],['Reference','AMN-TU-48291'],['Method',TU.cur==='EUR'?'SEPA transfer':TU.cur==='GBP'?'Faster Payments':'Bank transfer']])+'<p class="exp" style="margin:0 0 10px">Sample details. Your real account number appears here once our provider issues it.</p>';tuStep(3)});
+$('#tu3').addEventListener('click',()=>tuStep(4));
+$('#tuArrive').addEventListener('click',()=>topDone());
+function tuPaint(){if(TU.left>0)$('#tuExp').textContent='Rate valid for 0:'+String(TU.left).padStart(2,'0')}
+function tuQuote(){const c=TU.c,fee=Math.max(100,Math.round(c*0.005)),usdC=Math.round((c-fee)*RATE[TU.cur]);TU.q={usdC};
+ $('#tuQ').innerHTML=rowsHtml([['Money received',money(c,TU.cur)],['AMANAH fee',money(fee,TU.cur)],['Rate (sample, not live)','1 '+TU.cur+' = '+RATE[TU.cur].toFixed(4)+' USD'],['You get',usd(usdC)]]);
+ TU.left=60;$('#tuConv').hidden=false;$('#tuNew').hidden=true;tuStep(5);tuPaint();clearInterval(TU.t);
+ TU.t=setInterval(()=>{TU.left--;tuPaint();if(TU.left<=0){clearInterval(TU.t);$('#tuConv').hidden=true;$('#tuNew').hidden=false;$('#tuExp').textContent='This rate expired. Get a new rate to continue.'}},1000)}
+$('#tuNew').addEventListener('click',tuQuote);
+$('#tuConv').addEventListener('click',()=>{$('#tuDone').textContent=usd(TU.q.usdC)+' added to your wallet';tuStep(6)});
+// ---- KYC / AML onboarding (design preview, no real checks run) ----
+const OPTS={C:['Netherlands','Germany','United Kingdom','Sweden','Norway','Denmark','Belgium','France','Ireland','Switzerland','Other'],NA:['Somali','Dutch','British','German','Swedish','Norwegian','Danish','Belgian','French','Irish','Swiss','Other'],PP:['Send money to family','Receive money','Save money','Other'],MV:['Under $500','$500 to $2,000','$2,000 to $10,000','More than $10,000'],SF:['Salary','Self-employment','Savings','Benefits','Other'],EM:['Employed','Self-employed','Student','Not working','Retired'],YN:['No','Yes','I’m not sure']};
+$$('[data-opts]').forEach(s=>s.innerHTML='<option value="">Select…</option>'+OPTS[s.dataset.opts].map(o=>`<option>${o}</option>`).join(''));
+$$('[data-obnext]').forEach(b=>b.addEventListener('click',()=>{
+ const st=b.closest('[data-ob]'),all=[...st.querySelectorAll('[data-req]')],miss=all.filter(i=>i.type==='checkbox'?!i.checked:!i.value.trim());
+ all.forEach(i=>i.removeAttribute('aria-invalid'));const er=st.querySelector('.err');
+ if(miss.length){miss.forEach(i=>i.setAttribute('aria-invalid','true'));er.textContent='Complete the required items to continue.';miss[0].focus();return}
+ er.textContent='';obStep(+b.dataset.obnext)}));
+$$('[data-fake]').forEach(b=>b.addEventListener('click',()=>{b.textContent='✓ '+b.dataset.done;document.getElementById(b.dataset.fake).value='1'}));
+// ---- Splash: shows first, then opens the welcome screen ----
+let sp; const SP=()=>$('#splash');
+function endSplash(){clearTimeout(sp);if(SP().hidden)return;SP().hidden=true;pinStart('unlock',()=>view('home'))}
+function showSplash(){SP().hidden=false;clearTimeout(sp);sp=setTimeout(endSplash,matchMedia('(prefers-reduced-motion:reduce)').matches?1000:2800)}
+SP().addEventListener('click',endSplash);SP().addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();endSplash()}});
+$('#replay').addEventListener('click',showSplash);
+// ---- Notifications and currency window ----
+const NS=[['Transfer processing','Your $100.00 to Ayaan Abdi is being processed.','28 Oct'],['Money received','Mahad Hassan sent you $45.00.','24 Oct'],['Verification in review','We’re checking your ID. We’ll update you here.','20 Oct'],['New sign-in','A sign-in on an iPhone. If it wasn’t you, contact support.','18 Oct']];
+$('#bell').addEventListener('click',()=>{$('#nList').innerHTML=NS.map(n=>`<div class="nrow"><b>${n[0]}</b>${n[1]}<br><small>${n[2]}</small></div>`).join('');$('#nsheet').showModal();document.querySelector('#bell .ibdot').hidden=true;$('#bell').setAttribute('aria-label','Notifications')});
+$('#nX').addEventListener('click',()=>$('#nsheet').close());
+$('#curBtn').addEventListener('click',()=>$('#curSheet').showModal());
+$('#curX').addEventListener('click',()=>$('#curSheet').close());
+$$('#curSheet .copt:not([disabled])').forEach(b=>b.addEventListener('click',()=>{$('#curCode').textContent=b.dataset.c;$('#curSheet').close()}));
+// ---- Photos, multi-currency wallets and convert (sample data and sample rates) ----
+const KEYS={HW:'Hodan Warsame',AA:'Ayaan Abdi',MH:'Mahad Hassan',FA:'Fartun Ali'};
+let AV={};try{AV=JSON.parse(localStorage.getItem('amanah-av')||'{}')}catch(e){}
+const defAv=k=>{const h={HW:['#18A779','#0B3A2E'],AA:['#7AD9B4','#15966C'],MH:['#C4EEDD','#18A779'],FA:['#98DFC4','#0F7A59']}[k]||hueOf(k);const s=`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='${h[0]}'/><stop offset='1' stop-color='${h[1]}'/></linearGradient></defs><rect width='100' height='100' fill='url(#g)'/><circle cx='50' cy='38' r='18' fill='#fff' fill-opacity='.9'/><path d='M14 100c0-22 16-36 36-36s36 14 36 36z' fill='#fff' fill-opacity='.9'/></svg>`;return `url('data:image/svg+xml,${encodeURIComponent(s)}')`};
+const bgOf=k=>AV[k]?`url('${AV[k]}')`:portraitBg(k);
+function paintAv(){$$('.ava').forEach(el=>{let k=el.dataset.k;if(!k){const t=el.textContent.trim();if(!KEYS[t])return;k=t;el.dataset.k=t;el.textContent=''}el.style.backgroundImage=bgOf(k);el.style.backgroundSize='cover';el.style.backgroundPosition='center'})}
+new MutationObserver(paintAv).observe(document.querySelector('.phone'),{childList:true,subtree:true});paintAv();
+let PK=null;
+$$('[data-pick]').forEach(b=>b.addEventListener('click',()=>{PK=b.dataset.pick;$('#pfFile').click()}));
+$('#pfFile').addEventListener('change',e=>{const f=e.target.files[0];e.target.value='';if(!f||!PK)return;
+ if(!f.type.startsWith('image/')){toast('Choose an image file.');return}
+ const rd=new FileReader();rd.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas'),s=Math.min(im.width,im.height),n=160;c.width=c.height=n;c.getContext('2d').drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,n,n);AV[PK]=c.toDataURL('image/jpeg',.8);try{localStorage.setItem('amanah-av',JSON.stringify(AV))}catch(x){}paintAv();toast('Photo updated on this device.')};im.onerror=()=>toast('That image couldn’t be read.');im.src=rd.result};rd.readAsDataURL(f)});
+const RT={USD:1,EUR:.92,GBP:.79,CHF:.88,SEK:10.4,NOK:10.6,DKK:6.86,CAD:1.37,AUD:1.52};
+const NAMES={USD:'US dollar',EUR:'Euro',GBP:'British pound',CHF:'Swiss franc',SEK:'Swedish krona',NOK:'Norwegian krone',DKK:'Danish krone',CAD:'Canadian dollar',AUD:'Australian dollar'};
+const BAL={USD:128450,EUR:35000,GBP:12000,CHF:0,SEK:0,NOK:0,DKK:0,CAD:0,AUD:0};let CUR='USD';
+const fm=(c,cur)=>new Intl.NumberFormat('en-US',{style:'currency',currency:cur}).format(c/100);
+function heroPaint(){$('#heroBal').textContent=fm(BAL[CUR],CUR);$('#curCode').textContent=CUR}
+function drawCur(){$('#curList').innerHTML=Object.keys(BAL).map(c=>`<button class="copt" aria-pressed="${c===CUR}" data-c="${c}"><span class="k">${c}<small>${NAMES[c]}</small></span><b class="num">${fm(BAL[c],c)}</b></button>`).join('');
+ $$('#curList .copt').forEach(b=>b.addEventListener('click',()=>{CUR=b.dataset.c;heroPaint();$('#curSheet').close()}))}
+$('#curBtn').addEventListener('click',drawCur);
+let cvT=null,cvLeft=0,cvQ=null;
+function cvFill(){const o=Object.keys(BAL).map(c=>`<option value="${c}">${c} · ${fm(BAL[c],c)}</option>`).join('');const f=$('#cvFrom').value||'USD',t=$('#cvTo').value||'EUR';$('#cvFrom').innerHTML=o;$('#cvTo').innerHTML=o;$('#cvFrom').value=f;$('#cvTo').value=t}
+function cvPaint(){if(cvLeft>0)$('#cvExp').textContent='Rate valid for 0:'+String(cvLeft).padStart(2,'0')}
+function cvCalc(){clearInterval(cvT);$('#cvDone').textContent='';const a=$('#cvAmt').value.trim().replace(',','.'),n=Number(a),from=$('#cvFrom').value,to=$('#cvTo').value,e=$('#cvErr');
+ $('#cvQ').hidden=true;$('#cvGo').hidden=true;$('#cvNew').hidden=true;$('#cvExp').textContent='';
+ if(!a){e.textContent='';return}
+ if(!isFinite(n)||n<=0){e.textContent='Enter an amount above 0, for example 100.00.';return}
+ if(from===to){e.textContent='Choose two different currencies.';return}
+ const c=Math.round(n*100);if(c>BAL[from]){e.textContent='That’s more than your '+from+' balance of '+fm(BAL[from],from)+'.';return}
+ const fee=Math.max(100,Math.round(c*0.005));if(fee>=c){e.textContent='That amount is too small to cover the fee.';return}
+ e.textContent='';const r=RT[to]/RT[from],out=Math.round((c-fee)*r);cvQ={c,fee,out,from,to};
+ $('#cvQ').innerHTML=rowsHtml([['You convert',fm(c,from)],['AMANAH fee',fm(fee,from)],['Rate (sample, not live)','1 '+from+' = '+r.toFixed(4)+' '+to],['You get',fm(out,to)]]);
+ $('#cvQ').hidden=false;$('#cvGo').hidden=false;cvLeft=60;cvPaint();
+ cvT=setInterval(()=>{cvLeft--;cvPaint();if(cvLeft<=0){clearInterval(cvT);$('#cvGo').hidden=true;$('#cvNew').hidden=false;$('#cvExp').textContent='This rate expired. Get a new rate to continue.'}},1000)}
+['input','change'].forEach(ev=>{$('#cvAmt').addEventListener(ev,cvCalc);$('#cvFrom').addEventListener(ev,cvCalc);$('#cvTo').addEventListener(ev,cvCalc)});
+$('#cvNew').addEventListener('click',cvCalc);
+$('#cvSwap').addEventListener('click',()=>{const f=$('#cvFrom').value;$('#cvFrom').value=$('#cvTo').value;$('#cvTo').value=f;cvCalc()});
+$('#cvGo').addEventListener('click',()=>{const q=cvQ;if(!q)return;BAL[q.from]-=q.c;BAL[q.to]+=q.out;clearInterval(cvT);$('#cvQ').hidden=true;$('#cvGo').hidden=true;$('#cvExp').textContent='';$('#cvAmt').value='';heroPaint();cvFill();$('#cvDone').textContent='Converted '+fm(q.c,q.from)+' to '+fm(q.out,q.to)+'. Your balances are updated. Reference AMN-PREVIEW-CV-0001';toast('Conversion complete')});
+$$('[data-go="convert"]').forEach(b=>b.addEventListener('click',()=>{cvFill();$('#cvDone').textContent=''}));
+// ---- Card top-up and saved cards (preview: only brand, last 4 digits, expiry and name are ever kept) ----
+let CARDS=[];try{CARDS=JSON.parse(localStorage.getItem('amanah-cards')||'[]')}catch(e){}
+const saveCards=()=>{try{localStorage.setItem('amanah-cards',JSON.stringify(CARDS))}catch(e){}};
+const brandOf=n=>/^4/.test(n)?'Visa':/^(5[1-5]|2[2-7])/.test(n)?'Mastercard':/^3[47]/.test(n)?'Amex':'Card';
+const luhn=n=>{if(n.length<13)return false;let s=0,d=false;for(let i=n.length-1;i>=0;i--){let x=+n[i];if(d){x*=2;if(x>9)x-=9}s+=x;d=!d}return s%10===0};
+$('#cn').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,19).replace(/(.{4})/g,'$1 ').trim()});
+$('#cex').addEventListener('input',e=>{let v=e.target.value.replace(/\D/g,'').slice(0,4);if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2);e.target.value=v});
+$('#tu1').addEventListener('click',()=>{TU.m=document.querySelector('input[name=mth]:checked').value;$('#tu2').textContent=TU.m==='card'?'Continue to card details':'Show bank details'});
+$('#tu2').addEventListener('click',()=>{if(TU.step===3&&TU.m==='card')cardOpen()});
+function cardMode(){const s=document.querySelector('input[name=sc]:checked'),isNew=!s||s.value==='new';$('#cdFull').hidden=!isNew;$('#cdSaveWrap').hidden=!isNew}
+function cardOpen(){TU.reg=false;$('#cdH').textContent='Pay by card';$('#cdSum').hidden=false;const c=TU.c,f=Math.round(c*0.015);
+ $('#cdSum').innerHTML=rowsHtml([['Top-up amount',money(c,TU.cur)],['Card fee (sample, 1.5%)',money(f,TU.cur)],['Total charged to your card',money(c+f,TU.cur)]]);
+ $('#cdPay').textContent='Pay '+money(c+f,TU.cur);$('#cdErr').textContent='';
+ $('#cdSaved').innerHTML=CARDS.length?CARDS.map((k,i)=>`<label class="opt"><input type="radio" name="sc" value="${k.id}" ${i===0?'checked':''}><span><b>${k.brand} ···· ${k.last4}</b><br><small style="color:var(--muted)">Expires ${k.exp} · ${k.name}</small></span></label>`).join('')+'<label class="opt"><input type="radio" name="sc" value="new"><b>Use a new card</b></label>':'';
+ $$('input[name=sc]').forEach(r=>r.addEventListener('change',cardMode));cardMode();tuStep(7)}
+$('#cdPay').addEventListener('click',()=>{const e=$('#cdErr');$$('#tuCard .fld').forEach(i=>i.removeAttribute('aria-invalid'));
+ const fail=(id,m)=>{e.textContent=m;$('#'+id).setAttribute('aria-invalid','true');$('#'+id).focus()};
+ const s=document.querySelector('input[name=sc]:checked'),saved=s&&s.value!=='new',cvc=$('#ccv').value.trim();TU.pc=null;
+ if(!saved){const num=$('#cn').value.replace(/\s/g,''),nm=$('#cnm').value.trim(),ex=$('#cex').value,m=/^(\d\d)\/(\d\d)$/.exec(ex);
+  if(!luhn(num))return fail('cn','Check your card number. It doesn’t look right.');
+  const brand=brandOf(num);
+  if(!nm)return fail('cnm','Enter the name shown on the card.');
+  const mo=m?+m[1]:0,yr=m?2000+Number(m[2]):0,now=new Date();
+  if(!m||mo<1||mo>12||yr<now.getFullYear()||(yr===now.getFullYear()&&mo<now.getMonth()+1))return fail('cex','Enter a valid expiry date, like 08/29.');
+  const n=brand==='Amex'?4:3;if(!new RegExp('^\\d{'+n+'}$').test(cvc))return fail('ccv','Enter the '+n+'-digit security code.');
+  if($('#csv').checked)TU.pc={id:'c'+Date.now(),brand,last4:num.slice(-4),exp:ex,name:nm};
+ }else if(!/^\d{3,4}$/.test(cvc))return fail('ccv','Enter the security code on the back of your card.');
+ e.textContent='';['#cn','#cnm','#cex','#ccv'].forEach(i=>$(i).value='');$('#csv').checked=false;tuStep(8)});
+$('#cdOk').addEventListener('click',()=>{if(TU.pc){CARDS.push(TU.pc);saveCards();drawCards();toast('Card saved. We kept only the last 4 digits.');TU.pc=null}TU.reg?(TU.reg=false,view('profile')):topDone()});
+$('#cdNo').addEventListener('click',()=>{TU.pc=null;tuStep(7)});
+// ---- Top-up completion, register a card, recipients with @tags ----
+function topDone(){BAL[TU.cur]+=TU.c;heroPaint();cvFill();$('#tuDone').textContent=fm(TU.c,TU.cur)+' added to your '+TU.cur+' wallet';tuStep(6)}
+$$('[data-go="topup"]').forEach(b=>b.addEventListener('click',()=>{TU.reg=false;TU.m='card';TU.cur=CUR;$('#tuLbl').textContent='Amount in '+CUR+' (added to your '+CUR+' wallet)';tuStep(2)}));
+function cardRegister(){TU.reg=true;view('topup');$('#cdH').textContent='Add a card';$('#cdSum').hidden=true;$('#cdPay').textContent='Save card';$('#cdErr').textContent='';$('#cdSaved').innerHTML='';cardMode();$('#csv').checked=true;$('#cdSaveWrap').hidden=true;tuStep(7)}
+$('#addCardBtn').addEventListener('click',cardRegister);
+function hueOf(k){let h=0;for(const ch of k)h=(h*31+ch.charCodeAt(0))%360;return['hsl('+((h%40)+140)+',55%,62%)','hsl('+((h%40)+150)+',60%,28%)']}
+const FN=['Ayaan','Mahad','Fartun','Hanad','Abdirahman','Hamza','Idil','Ilhan','Sahra','Yusuf','Nasra','Farah','Amina','Khadija','Ismail','Hibo','Ahmed','Maryan','Omar','Sagal','Bashir','Deeqa','Guled','Halima','Jamal','Kowsar','Liban','Muna','Nuur','Rahma','Samiira','Tahlil','Zamzam','Yasmin','Abdullahi','Ladan','Mursal','Asha','Barkhad','Cabdi','Dahabo','Elmi','Faduma','Garad','Hawa','Iman','Jabril','Kadar','Layla','Mukhtar'];
+const LN=['Abdi','Hassan','Ali','Warsame','Mohamud','Ahmed','Osman','Yusuf','Farah','Jama','Nur','Omar','Ibrahim','Said','Dahir','Duale','Guled','Hirsi','Isse','Kahin','Mire'],CC=['SO','SO','SO','KE','SO','ET','SO','SO','GB','SO'];
+let sd=48271;const nx=()=>{sd=(sd*1103515245+12345)%2147483648;return sd},used=new Set();
+function digits(){let d;do{d=String(10000000+nx()%90000000)}while(used.has(d));used.add(d);return d}
+const REC=FN.map((f,i)=>{const l=i<3?['Abdi','Hassan','Ali'][i]:LN[(i+7)%LN.length];return{name:f+' '+l,tag:'@'+CC[i%10]+l.slice(0,2).toUpperCase()+digits(),k:i<3?['AA','MH','FA'][i]:'r'+i}});
+let CREC=[];try{CREC=JSON.parse(localStorage.getItem('amanah-crec')||'[]')}catch(e){}
+REC.unshift(...CREC);let SEL='Ayaan Abdi';
+function drawRec(){const q=$('#rcq').value.trim().toLowerCase(),L=REC.filter(r=>!q||r.name.toLowerCase().includes(q)||r.tag.toLowerCase().includes(q));
+ $('#rcList').innerHTML=L.length?L.map(r=>`<label class="opt"><input type="radio" name="rc" value="${r.name}"${r.name===SEL?' checked':''}><span class="ava" data-k="${r.k}" aria-hidden="true"></span><span><b>${r.name}</b><br><small style="color:var(--muted)">${r.tag}</small></span></label>`).join(''):'<p class="exp">No recipients match. Try another name or @tag, or add a new recipient.</p>';
+ if(L.length&&!L.some(r=>r.name===SEL)){SEL=L[0].name;$('#rcList input').checked=true}
+ $$('#rcList input').forEach(i=>i.addEventListener('change',()=>SEL=i.value))}
+$('#rcq').addEventListener('input',drawRec);drawRec();
+$('#arSave').addEventListener('click',()=>{const e=$('#arErr'),fn=$('#arf').value.trim(),ln=$('#arl').value.trim(),tg=$('#art').value.trim().toUpperCase();
+ $$('#addrec .fld').forEach(i=>i.removeAttribute('aria-invalid'));
+ const fail=(id,m)=>{e.textContent=m;$('#'+id).setAttribute('aria-invalid','true');$('#'+id).focus()};
+ if(!fn)return fail('arf','Enter their first name.');if(!ln)return fail('arl','Enter their family name.');
+ if(!/^@[A-Z]{4}\d{8}$/.test(tg))return fail('art','Enter the tag like @SOAB12345678: @, 2 letters for the country, 2 letters from the family name, then 8 digits.');
+ if(tg.slice(3,5)!==ln.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Za-z]/g,'').slice(0,2).toUpperCase())return fail('art','Letters 3 and 4 of the tag should be the first two letters of the family name.');
+ if(REC.some(r=>r.tag===tg))return fail('art','This recipient is already in your list.');
+ const id='c'+Date.now(),r={name:fn+' '+ln,tag:tg,k:id};REC.unshift(r);CREC.push(r);if(AV.NEW){AV[id]=AV.NEW;delete AV.NEW}
+ try{localStorage.setItem('amanah-crec',JSON.stringify(CREC));localStorage.setItem('amanah-av',JSON.stringify(AV))}catch(x){}
+ ['#arf','#arl','#art'].forEach(i=>$(i).value='');e.textContent='';SEL=r.name;drawRec();paintAv();toast('Recipient added.');view('send')});
+// ---- Illustrated portraits (sample images), favorites and profile recipients ----
+function hsh(k){let h=7;for(const c of k)h=(h*33+c.charCodeAt(0))>>>0;return h}
+function portraitBg(k){const h=hsh(k),P={HW:{s:0,skin:'#8D5524',c:'#0F7A59'}}[k],skins=['#6B4226','#8D5524','#A0693B','#C68642'],hairs=['#1b1b1b','#2b1a12','#3a2a1c'],tops=['#0F7A59','#15966C','#123D31','#7AD9B4','#E9F5EF'],cols=['#0F7A59','#18A779','#123D31','#2E8B73','#3B5B8A'],
+ skin=P?P.skin:skins[h%4],st=P?P.s:h%4,top=P?P.c:tops[(h>>3)%5],hair=hairs[(h>>5)%3],cv=cols[(h>>7)%5],bg=['#C4EEDD','#98DFC4','#E9F5EF','#B9E6D3'][(h>>9)%4];
+ let back='',front='';
+ if(st===0)back=`<path d='M50 12C30 12 20 28 20 46v34h60V46C80 28 70 12 50 12z' fill='${P?'#18A779':cv}'/>`;
+ if(st===2)back=`<ellipse cx='50' cy='46' rx='24' ry='30' fill='${hair}'/>`;
+ if(st===1||st===3)front=`<path d='M33 42c0-14 7-22 17-22s17 8 17 22c-5-7-29-7-34 0z' fill='${hair}'/>`;
+ if(st===3)front+=`<path d='M36 50c3 16 25 16 28 0v8c-4 14-24 14-28 0z' fill='${hair}'/>`;
+ const s=`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='${bg}'/>${back}<path d='M12 100c0-20 16-30 38-30s38 10 38 30z' fill='${top}'/><rect x='43' y='58' width='14' height='14' rx='5' fill='${skin}'/><ellipse cx='50' cy='44' rx='16' ry='19' fill='${skin}'/>${front}<circle cx='44' cy='45' r='1.8' fill='#1b1b1b'/><circle cx='56' cy='45' r='1.8' fill='#1b1b1b'/><path d='M44 54q6 5 12 0' stroke='#1b1b1b' stroke-width='1.8' fill='none' stroke-linecap='round'/></svg>`;
+ return `url("data:image/svg+xml,${encodeURIComponent(s)}")`}
+const FAVK=['AA','MH','FA','r3','r4','r5','r6','r7'];
+function drawFav(){$('.fav').innerHTML=REC.filter(r=>FAVK.includes(r.k)).map(r=>`<button data-fav="${r.name}"><span class="ava" data-k="${r.k}" aria-hidden="true"></span>${r.name.split(' ')[0]}</button>`).join('');
+ $$('[data-fav]').forEach(b=>b.addEventListener('click',()=>{SEL=b.dataset.fav;$('#rcq').value='';drawRec();view('send')}))}
+function drawPr(){$('#prList').innerHTML=REC.filter(r=>FAVK.includes(r.k)).map(r=>`<div class="tx"><span class="ava" data-k="${r.k}" aria-hidden="true"></span><div class="who"><b>${r.name}</b><small>${r.tag}</small></div><button class="link" data-pick="${r.k}" aria-label="Change photo for ${r.name}">Change photo</button></div>`).join('');
+ $$('#prList [data-pick]').forEach(b=>b.addEventListener('click',()=>{PK=b.dataset.pick;$('#pfFile').click()}))}
+drawFav();drawPr();paintAv();
+// ---- Full transfer details window (used by Home, Wallet and Activity rows) ----
+function openSheet(x){const rec=recFind(r=>r.name===x.n),out=x.a<0,abs=Math.abs(x.a),h=hsh(x.r),time=String(8+h%12).padStart(2,'0')+':'+String(h%60).padStart(2,'0');
+ const S={Completed:['Created','Processing','Completed'],Processing:['Created','Processing'],Pending:['Created'],'Under review':['Created','Processing','Under review'],Failed:['Created','Processing','Failed'],Reversed:['Created','Processing','Completed','Reversed']}[x.s]||['Created'];
+ const mark=i=>{const last=i===S.length-1;return last&&(x.s==='Processing'||x.s==='Under review'||x.s==='Pending')?'⏳':last&&x.s==='Failed'?'✕':'✓'};
+ const av=rec?`<span class="ava pfava" data-k="${rec.k}" aria-hidden="true" style="margin:0 auto 6px"></span>`:`<span class="ava pfava" aria-hidden="true" style="margin:0 auto 6px;background:var(--glass)">＋</span>`;
+ const R=[[out?'To':'From',x.n],['AMANAH tag',rec?rec.tag:'–'],['Type',x.t],['Status',x.s],['Amount',usd(abs)],['Fees',usd(x.f)],[out?'Total charged':'You received',usd(out?abs+x.f:abs)],[out?'Paid from':'Paid into','AMANAH wallet (USD)'],['Date and time',x.d+', '+time],['Reference',x.r]];
+ $('#shT').textContent='Transfer details';
+ $('#shB').innerHTML=`<div style="text-align:center;margin:0 0 10px">${av}<b>${x.n}</b><div class="num" style="font-size:30px;font-weight:800">${out?'−':'+'}${usd(abs)}</div><span class="badge ${cls(x.s)}">${x.s}</span></div>`+rowsHtml(R)+'<h3 style="font-size:14px;margin:14px 0 4px">Progress</h3>'+S.map((t,i)=>`<div class="tl"><i>${mark(i)}</i><span>${t}</span></div>`).join('')+`<p class="exp">${WHY[x.s]}</p>`;
+ $('#sheet').showModal();paintAv()}
+// ---- PIN: unlock after the splash, and create during onboarding (preview: demo PIN 123456, kept in memory only) ----
+let PIN='123456',pinMode='unlock',pinBuf='',pinFirst='',pinDone=null,pinFails=0,pinLock=0;
+const weakPin=p=>/^(\d)\1+$/.test(p)||'0123456789'.includes(p)||'9876543210'.includes(p);
+function pinPaint(){$$('#dots i').forEach((d,i)=>d.classList.toggle('on',i<pinBuf.length));$('#dots').setAttribute('aria-label',pinBuf.length+' of 6 digits entered')}
+function pinStart(mode,done){pinMode=mode;pinDone=done;pinBuf='';pinFirst='';pinFails=0;
+ const T={unlock:['Enter your PIN','Welcome back, Hodan. Enter your 6-digit PIN to open AMANAH.'],create:['Create your PIN','Choose 6 digits to protect your account. You’ll use it every time you open AMANAH.']}[mode];
+ $('#pinT').textContent=T[0];$('#pinS').textContent=T[1];$('#pinErr').textContent='';$('#pinAva').hidden=mode!=='unlock';$('#pinAlt').hidden=mode!=='unlock';
+ $('#pinCancel').hidden=!pinCancelTo;view('pin');pinPaint()}
+function pinShake(msg){const d=$('#dots');d.classList.add('bad');setTimeout(()=>d.classList.remove('bad'),400);$('#pinErr').textContent=msg;pinBuf='';pinPaint()}
+function pinSubmit(){const b=pinBuf;
+ if(pinMode==='unlock'){if(b===PIN){pinFails=0;$('#pinErr').textContent='';pinBuf='';pinPaint();pinDone&&pinDone();return}
+  pinFails++;if(pinFails>=5){pinLock=Date.now()+30000;pinFails=0;pinShake('Too many wrong PINs. Try again in 30 seconds.')}else pinShake('That PIN isn’t right. '+(5-pinFails)+(5-pinFails===1?' try':' tries')+' left.');return}
+ if(pinMode==='create'){pinFirst=b;pinMode='confirm';pinBuf='';pinPaint();$('#pinErr').textContent='';$('#pinT').textContent='Confirm your PIN';
+  $('#pinS').textContent=weakPin(b)?'Heads up: this PIN is easy to guess, so the real app won’t accept it. The preview allows it.':'Enter the same 6 digits again.';return}
+ if(b===pinFirst){PIN=b;pinBuf='';pinPaint();toast('PIN created.');pinDone&&pinDone();return}
+ pinMode='create';pinFirst='';$('#pinT').textContent='Create your PIN';$('#pinS').textContent='Choose 6 digits to protect your account.';pinShake('The PINs didn’t match. Start again.')}
+function pinDigit(d){if(pinLock>Date.now()){$('#pinErr').textContent='Locked for a moment. Try again shortly.';return}
+ if(pinBuf.length<6){pinBuf+=d;pinPaint();if(pinBuf.length===6)setTimeout(pinSubmit,120)}}
+$('#pad').innerHTML=['1','2','3','4','5','6','7','8','9','','0','x'].map(k=>k===''?'<span></span>':k==='x'?'<button data-p="x" aria-label="Delete last digit">⌫</button>':`<button data-p="${k}">${k}</button>`).join('');
+$$('#pad [data-p]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.p==='x'){pinBuf=pinBuf.slice(0,-1);pinPaint()}else pinDigit(b.dataset.p)}));
+document.addEventListener('keydown',e=>{if($('#pin').hidden)return;if(/^\d$/.test(e.key))pinDigit(e.key);else if(e.key==='Backspace'){pinBuf=pinBuf.slice(0,-1);pinPaint()}});
+$('#pinAlt').addEventListener('click',()=>toast('Resetting your PIN needs a new ID check. Coming in a later milestone.'));
+// ---- Top-up first page: currency choice and quick amounts ----
+function tuSync(){TU.cur=CUR;$('#tuCurCode').textContent=CUR;$('#tuLbl').textContent='Amount in '+CUR;$('#tuTo').textContent=CUR+' wallet';$('#tuLim').textContent=fm(1000000,CUR)}
+function heroPaint(){$('#heroBal').textContent=fm(BAL[CUR],CUR);$('#curCode').textContent=CUR;tuSync()}
+$('#tuCur').addEventListener('click',()=>{drawCur();$('#curSheet').showModal()});
+$$('[data-q]').forEach(b=>b.addEventListener('click',()=>{$('#tuAmt').value=b.dataset.q+'.00';$('#tuErr').textContent='';$('#tuAmt').focus()}));
+$$('[data-go="topup"]').forEach(b=>b.addEventListener('click',tuSync));
+// ---- Wallet screen: every currency with its balance ----
+function drawWal(){$('#wCur').innerHTML=Object.keys(BAL).map(c=>`<button class="tx rowbtn" data-wc="${c}" aria-pressed="${c===CUR}"><span class="ava" aria-hidden="true" style="background:var(--glass);color:var(--em);font-size:12px">${c}</span><span class="who"><b>${NAMES[c]}</b><small>${c===CUR?'Selected wallet':'Tap to select'}</small></span><b class="num">${fm(BAL[c],c)}</b></button>`).join('');
+ $$('#wCur [data-wc]').forEach(b=>b.addEventListener('click',()=>{CUR=b.dataset.wc;heroPaint();toast(CUR+' wallet selected.')}))}
+function drawWal(){}
+function heroPaint(){$('#heroBal').textContent=fm(BAL[CUR],CUR);$('#curCode').textContent=CUR;$('#wBal').textContent=fm(BAL[CUR],CUR);$('#wCurCode').textContent=CUR;tuSync()}
+$('#wCurBtn').addEventListener('click',()=>{drawCur();$('#curSheet').showModal()});
+// ---- Send money: currency, quick amounts, glass design ----
+function sdSync(){$('#sdCurCode').textContent=CUR;$('#sdLbl').textContent='Amount in '+CUR;$('#sdAvail').textContent=fm(BAL[CUR],CUR);
+ const rec=recFind(r=>r.name===SEL)||{name:SEL,tag:'',k:'x'};
+ $('#sdWho').innerHTML=`<span class="ava" data-k="${rec.k}" aria-hidden="true"></span><span style="flex:1"><b>${rec.name}</b><br><small style="color:var(--muted)">${rec.tag}</small></span><button class="link" id="sdChange">Change</button>`;
+ $('#sdChange').addEventListener('click',()=>setStep(1))}
+function heroPaint(){$('#heroBal').textContent=fm(BAL[CUR],CUR);$('#curCode').textContent=CUR;$('#wBal').textContent=fm(BAL[CUR],CUR);$('#wCurCode').textContent=CUR;tuSync();sdSync()}
+$('#sdCur').addEventListener('click',()=>{drawCur();$('#curSheet').showModal()});
+// ---- Transfer page: layout copied from the reference image (sample rates, own wallets only) ----
+let XF='USD',XT='EUR',xQ=null,xLeft=0,xTimer=null,xExp=false;
+const symOf=c=>fm(0,c).replace(/[\d.,\s\u00a0]/g,'');
+function openPick(title,cur,pick){$('#xcT').textContent=title;
+ $('#xcList').innerHTML=Object.keys(BAL).map(c=>`<button class="copt" aria-pressed="${c===cur}" data-c="${c}"><span class="k">${c}<small>${NAMES[c]}</small></span><b class="num">${fm(BAL[c],c)}</b></button>`).join('');
+ $$('#xcList .copt').forEach(b=>b.addEventListener('click',()=>{pick(b.dataset.c);$('#xcSheet').close()}));$('#xcSheet').showModal()}
+$('#xcX').addEventListener('click',()=>$('#xcSheet').close());
+function xCents(){const n=Number($('#xAmt').value.trim().replace(/,/g,''));return isFinite(n)&&n>0?Math.round(n*100):0}
+function xPaint(){$('#xTimer').textContent=xLeft>0?'('+xLeft+'s)':'(expired)';$('#xValid').textContent=xLeft>0?'0:'+String(xLeft).padStart(2,'0'):'Expired'}
+function xRender(){clearInterval(xTimer);const c=xCents(),err=$('#xErr'),go=$('#xGo'),r=RT[XT]/RT[XF];
+ $('#xFromCode').textContent=XF;$('#xToCode').textContent=XT;$('#xSymF').textContent=symOf(XF);
+ $('#xFromTxt').textContent=XF+' wallet \u00b7 '+fm(BAL[XF],XF);$('#xAvail').textContent=fm(BAL[XF],XF);$('#xDest').textContent=XT+' wallet';
+ $('#xRate').textContent='1 '+XF+' = '+r.toFixed(4)+' '+XT;$('#xRate2').textContent=$('#xRate').textContent;
+ $$('#xQ .chip').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.x==='max'?(c>0&&c===BAL[XF]):c===Number(b.dataset.x)*100)));
+ xQ=null;err.textContent='';$('#xTimer').textContent='';$('#xValid').textContent='\u2013';$('#xFee').textContent='\u2013';
+ if(!c){$('#xOut').textContent=symOf(XT)+' 0.00';go.textContent='Enter an amount';go.disabled=true;return}
+ const fee=Math.max(100,Math.round(c*0.005));
+ if(c>BAL[XF]){err.textContent='That\u2019s more than your '+XF+' balance of '+fm(BAL[XF],XF)+'.';go.textContent='Not enough '+XF;go.disabled=true;return}
+ if(fee>=c){err.textContent='That amount is too small to cover the fee.';go.textContent='Amount too small';go.disabled=true;return}
+ const out=Math.round((c-fee)*r);xQ={c,fee,out};
+ $('#xOut').textContent=fm(out,XT);$('#xFee').textContent=fm(fee,XF)+' (0.5%, min 1.00)';
+ go.disabled=false;go.textContent='Confirm Exchange ('+fm(c,XF)+') \u2192';
+ xLeft=60;xPaint();xTimer=setInterval(()=>{xLeft--;xPaint();if(xLeft<=0){clearInterval(xTimer);xQ=null;xExp=true;go.textContent='Get a new rate'}},1000)}
+$('#xAmt').addEventListener('input',()=>{xExp=false;xRender()});
+$('#xFromBtn').addEventListener('click',()=>openPick('Convert from',XF,c=>{XF=c;if(XT===XF)XT=XF==='USD'?'EUR':'USD';xExp=false;xRender()}));
+$('#xFromCur').addEventListener('click',()=>$('#xFromBtn').click());
+$('#xToCur').addEventListener('click',()=>openPick('Convert to',XT,c=>{XT=c;if(XF===XT)XF=XT==='USD'?'EUR':'USD';xExp=false;xRender()}));
+$('#xSwap').addEventListener('click',()=>{const t=XF;XF=XT;XT=t;xExp=false;xRender()});
+$$('#xQ .chip').forEach(b=>b.addEventListener('click',()=>{const v=b.dataset.x==='max'?BAL[XF]/100:Number(b.dataset.x);$('#xAmt').value=v?v.toFixed(2):'';xExp=false;xRender()}));
+$('#xGo').addEventListener('click',()=>{if(xExp){xExp=false;xRender();return}if(!xQ)return;const q=xQ;BAL[XF]-=q.c;BAL[XT]+=q.out;exTx(q);clearInterval(xTimer);$('#xAmt').value='';xRender();heroPaint();$('#xDone').textContent='Converted '+fm(q.c,XF)+' to '+fm(q.out,XT)+'. Your balances are updated. Reference AMN-PREVIEW-CV-0002';toast('Exchange complete')});
+$$('[data-go="convert"]').forEach(b=>b.addEventListener('click',()=>{XF=CUR;XT=XF==='EUR'?'USD':'EUR';xExp=false;$('#xAmt').value='';$('#xDone').textContent='';xRender()}));
+// ---- Real-demo transactions: every top-up, exchange and transfer is recorded, notified and saved in this browser ----
+function recFind(f){try{return REC.find(f)}catch(e){return undefined}}
+const NSU=[];let SEQ=1,actF='All';
+$$('.chip[data-f]').forEach(c=>c.addEventListener('click',()=>{actF=c.dataset.f}));
+const nowD=()=>new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}),nowT=()=>new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+const newRef=()=>'AMN-DEMO-'+String(SEQ++).padStart(4,'0');
+function persist(){try{localStorage.setItem('amanah-state',JSON.stringify({BAL,SEQ,tx:TX.filter(x=>x.u),ns:NSU}))}catch(e){}}
+function rows(list,el){el.innerHTML=list.length?list.map(x=>{const i=TX.indexOf(x),c=x.cur||'USD',rec=recFind(r=>r.name===x.n),av=rec?`<span class="ava" data-k="${rec.k}" aria-hidden="true"></span>`:`<span class="ava" aria-hidden="true" style="font-size:15px">${x.g||ini(x.n).slice(0,2)}</span>`;
+  return `<button class="tx rowbtn" data-i="${i}">${av}<span class="who"><b>${x.n}</b><small>${x.t} · ${x.d}</small></span><span style="text-align:right"><b class="num ${x.a>0?'ok':''}">${x.a<0?'−':'+'}${fm(Math.abs(x.a),c)}</b><br><span class="badge ${cls(x.s)}">${x.s}</span></span></button>`}).join(''):'<p class="exp" style="padding:14px">No transfers of this type yet.</p>';
+ el.querySelectorAll('.rowbtn').forEach(b=>b.addEventListener('click',()=>openSheet(TX[b.dataset.i])))}
+function openSheet(x){const c=x.cur||'USD',rec=recFind(r=>r.name===x.n),out=x.a<0,abs=Math.abs(x.a),h=hsh(x.r),time=x.time||(String(8+h%12).padStart(2,'0')+':'+String(h%60).padStart(2,'0'));
+ const S={Completed:['Created','Processing','Completed'],Processing:['Created','Processing'],Pending:['Created'],'Under review':['Created','Processing','Under review'],Failed:['Created','Processing','Failed'],Reversed:['Created','Processing','Completed','Reversed']}[x.s]||['Created'];
+ const mark=i=>{const last=i===S.length-1;return last&&(x.s==='Processing'||x.s==='Under review'||x.s==='Pending')?'\u23f3':last&&x.s==='Failed'?'\u2715':'\u2713'};
+ const av=rec?`<span class="ava pfava" data-k="${rec.k}" aria-hidden="true" style="margin:0 auto 6px"></span>`:`<span class="ava pfava" aria-hidden="true" style="margin:0 auto 6px;background:var(--glass)">${x.g||'＋'}</span>`;
+ const R=[[out?'To':'From',x.n],['AMANAH tag',rec?rec.tag:'–'],['Type',x.t],['Status',x.s],['Amount',fm(abs,c)],['Fees',fm(x.f,c)],[out?'Total charged':'You received',fm(out?abs+x.f:abs,c)],[out?'Paid from':'Paid into',c+' wallet']].concat(x.m?[['Payment method',x.m]]:[],[['Date and time',x.d+', '+time],['Reference',x.r]]);
+ $('#shT').textContent='Transfer details';
+ $('#shB').innerHTML=`<div style="text-align:center;margin:0 0 10px">${av}<b>${x.n}</b><div class="num" style="font-size:30px;font-weight:800">${out?'−':'+'}${fm(abs,c)}</div><span class="badge ${cls(x.s)}">${x.s}</span></div>`+rowsHtml(R)+'<h3 style="font-size:14px;margin:14px 0 4px">Progress</h3>'+S.map((t,i)=>`<div class="tl"><i>${mark(i)}</i><span>${t}</span></div>`).join('')+`<p class="exp">${WHY[x.s]}</p>`;
+ $('#sheet').showModal();paintAv()}
+function refreshTx(){drawActivity(actF);rows(TX.slice(0,3),$('#hRecent'));rows(TX.slice(0,3),$('#wList'));rows(TX.filter(x=>x.t==='Received'&&!x.g),$('#inList'))}
+function notify(t,m){const e=[t,m,nowD()];NSU.unshift(e);NS.unshift(e);document.querySelector('#bell .ibdot').hidden=false;$('#bell').setAttribute('aria-label','Notifications, new');persist()}
+function txAdd(o){const e=Object.assign({d:nowD(),time:nowT(),r:newRef(),f:0,u:1},o);TX.unshift(e);persist();refreshTx();return e}
+function finishTx(e){if(e.s!=='Processing')return;e.s='Completed';persist();refreshTx();notify('Transfer completed',fm(Math.abs(e.a),e.cur)+' to '+e.n+' has arrived.')}
+function sendTx(){const q=quote(cents),e=txAdd({n:SEL,t:'Sent',a:-cents,cur:CUR,f:q.provider+q.amanah,s:'Processing',m:'AMANAH wallet'});notify('Transfer processing','Your '+fm(cents,CUR)+' to '+SEL+' is being processed.');setTimeout(()=>finishTx(e),8000)}
+function topDone(){BAL[TU.cur]+=TU.c;heroPaint();cvFill();txAdd({n:'Card top-up',g:'＋',t:'Received',a:TU.c,cur:TU.cur,f:Math.round(TU.c*0.015),s:'Completed',m:'Debit or credit card'});notify('Top-up complete',fm(TU.c,TU.cur)+' was added to your '+TU.cur+' wallet.');$('#tuDone').textContent=fm(TU.c,TU.cur)+' added to your '+TU.cur+' wallet';tuStep(6)}
+function exTx(q){const ref=newRef(),f=XF,t=XT;txAdd({n:'Exchange to '+t,g:'⇄',t:'Internal',a:-(q.c-q.fee),cur:f,f:q.fee,s:'Completed',r:ref});txAdd({n:'Exchange from '+f,g:'⇄',t:'Internal',a:q.out,cur:t,s:'Completed',r:ref+'-B'});notify('Exchange complete','Converted '+fm(q.c,f)+' to '+fm(q.out,t)+'.')}
+try{const s=JSON.parse(localStorage.getItem('amanah-state')||'null');if(s){Object.assign(BAL,s.BAL);SEQ=s.SEQ||1;TX.unshift(...(s.tx||[]));NSU.push(...(s.ns||[]));NS.unshift(...(s.ns||[]))}}catch(e){}
+TX.filter(x=>x.u&&x.s==='Processing').forEach(e=>setTimeout(()=>finishTx(e),3000));
+$('#resetDemo').addEventListener('click',()=>{try{['amanah-state','amanah-settings','amanah-av','amanah-cards','amanah-crec'].forEach(k=>localStorage.removeItem(k))}catch(e){}location.reload()});
+heroPaint();refreshTx();
+// ---- Glass date picker (replaces the browser's own calendar, which can't be made translucent) ----
+(function(){const MN=['January','February','March','April','May','June','July','August','September','October','November','December'],ty=new Date().getFullYear(),sel=$('#calM'),sy=$('#calY');
+ sel.innerHTML=MN.map((m,i)=>`<option value="${i}">${m}</option>`).join('');
+ let ys='';for(let y=ty-18;y>=1920;y--)ys+=`<option>${y}</option>`;sy.innerHTML=ys;sy.value=String(ty-30);sel.value='0';
+ let cur=null;
+ function draw(){const y=+sy.value,m=+sel.value,first=(new Date(y,m,1).getDay()+6)%7,n=new Date(y,m+1,0).getDate();let h='';for(let i=0;i<first;i++)h+='<span></span>';
+  for(let d=1;d<=n;d++){const v=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');h+=`<button type="button" data-d="${v}" aria-pressed="${v===cur}">${d}</button>`}
+  $('#calG').innerHTML=h;$$('#calG [data-d]').forEach(b=>b.addEventListener('click',()=>{{const [Y,M,D]=b.dataset.d.split('-').map(Number),t=new Date();let age=t.getFullYear()-Y-((t.getMonth()+1<M||(t.getMonth()+1===M&&t.getDate()<D))?1:0);if(age<18){toast('You must be 18 or older to open an account.');return}}cur=b.dataset.d;$('#dob').value=cur;$('#dob').removeAttribute('aria-invalid');$('#calSheet').close()}))}
+ sel.addEventListener('change',draw);sy.addEventListener('change',draw);
+ $('#dob').addEventListener('click',()=>{if(cur){sy.value=cur.slice(0,4);sel.value=String(+cur.slice(5,7)-1)}draw();$('#calSheet').showModal()});
+ $('#dob').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('#dob').click()}});
+ $('#calX').addEventListener('click',()=>$('#calSheet').close())})();
+xRender();
+$('#to2').addEventListener('click',sdSync);
+$$('[data-sq]').forEach(b=>b.addEventListener('click',()=>{$('#amount').value=b.dataset.sq+'.00';$('#err').textContent='';$('#amount').focus()}));
+$('#confirm').addEventListener('click',e=>{if(e.currentTarget.disabled)return;BAL[CUR]-=quote(cents).total;heroPaint();sendTx()},true);
+function showQuote(){const q=quote(cents),who=document.querySelector('input[name=rc]:checked').value,rec=recFind(r=>r.name===who)||{};
+ $('#sum').innerHTML=[['Recipient',who+' · '+(rec.tag||'')],['Amount sent',fm(cents,CUR)],['Provider charges',fm(q.provider,CUR)],['AMANAH fee',fm(q.amanah,CUR)],['Conversion','None. Same currency'],['Conversion charges',fm(0,CUR)],['They receive',fm(cents,CUR)]].map(r=>`<div class="r"><span>${r[0]}</span><b class="num">${r[1]}</b></div>`).join('')+`<div class="r tot"><span>Total charged</span><b class="num">${fm(q.total,CUR)}</b></div>`;
+ left=300;$('#confirm').hidden=false;$('#requote').hidden=true;clearInterval(tick);paint();
+ tick=setInterval(()=>{left--;paint();if(left<=0){clearInterval(tick);$('#confirm').hidden=true;$('#requote').hidden=false;$('#exp').textContent='This quote expired. Get a new quote to continue.'}},1000)}
+sdSync();
+heroPaint();
+drawWal();
+tuSync();
+function drawCards(){$('#cardList').innerHTML=CARDS.length?CARDS.map(k=>`<div class="tx"><span class="ava" aria-hidden="true" style="background:var(--surface);color:var(--em);font-size:11px">${k.brand.slice(0,4)}</span><div class="who"><b>${k.brand} ···· ${k.last4}</b><small>Expires ${k.exp} · ${k.name}</small></div><button class="link" data-rm="${k.id}">Remove</button></div>`).join(''):'<p class="exp" style="padding:14px">No saved cards yet. Choose “Save this card” when you top up by card.</p>';
+ $$('[data-rm]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.arm){CARDS=CARDS.filter(k=>k.id!==b.dataset.rm);saveCards();drawCards();toast('Card removed.');return}b.dataset.arm='1';b.textContent='Tap again to remove';setTimeout(()=>{if(b.isConnected){delete b.dataset.arm;b.textContent='Remove'}},4000)}))}
+drawCards();
+cvFill();
+if(['activity','send','wallet','receive','topup'].includes(location.hash.slice(1)))SP().hidden=true;else showSplash();
+function obReview(){const v=i=>$(i).value||'–';$('#obSum').innerHTML=rowsHtml([['Name',v('#fn')+' '+v('#ln')],['Date of birth',v('#dob')],['Lives in',v('#rc')],['Address',v('#st')+', '+v('#ct')],['Main use',v('#pp')],['ID document',document.querySelector('input[name=idt]:checked').value]])}
+K.moreinfo=['i','We need a bit more information','Please upload proof of address dated within the last 3 months. Your account stays locked for sending until we have it.','Upload document'];
+$('#theme2').addEventListener('click',()=>$('#theme').click());
+$('#theme').addEventListener('click',()=>{const r=document.documentElement;r.dataset.theme=getComputedStyle(r).colorScheme.includes('dark')?'light':'dark'});
+// ---- Settings pages: Security, Limits, Language, Support (preview: kept in this browser only) ----
+const escH=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let ST={bio:false,alerts:true,lock:300,lang:'en',dev:[{id:'d1',n:'This phone',p:'Zurich, Switzerland',w:'Active now',c:1},{id:'d2',n:'iPad',p:'Zurich, Switzerland',w:'Last active 2 Nov',c:0}],tk:[]};
+try{Object.assign(ST,JSON.parse(localStorage.getItem('amanah-settings')||'{}'))}catch(e){}
+const stSave=()=>{try{localStorage.setItem('amanah-settings',JSON.stringify(ST))}catch(e){}};
+function stPaint(){$$('[data-set]').forEach(b=>b.setAttribute('aria-checked',String(!!ST[b.dataset.set])));$('#setLock').value=String(ST.lock)}
+$$('[data-set]').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.set;ST[k]=!ST[k];stSave();stPaint();toast((k==='bio'?'Face ID or fingerprint':'Sign-in alerts')+(ST[k]?' on.':' off.')+(k==='bio'&&ST[k]?' Preview only.':''))}));
+$('#setLock').addEventListener('change',e=>{ST.lock=+e.target.value;stSave();toast('Auto-lock updated.')});
+// change PIN: current PIN first, then a new one
+let pinCancelTo=null;
+function pinChange(){pinCancelTo='security';
+ pinStart('unlock',()=>{pinStart('create',()=>{pinCancelTo=null;view('security');toast('PIN changed.')});$('#pinT').textContent='Choose a new PIN'});
+ $('#pinT').textContent='Enter your current PIN';$('#pinS').textContent='We need your current PIN before you can change it.';$('#pinAva').hidden=true;$('#pinAlt').hidden=true}
+$('#secPin').addEventListener('click',pinChange);
+$('#pinCancel').addEventListener('click',()=>{const t=pinCancelTo||'home';pinCancelTo=null;view(t)});
+// devices
+function drawDev(){$('#devList').innerHTML=ST.dev.map(d=>`<div class="tx"><span class="who"><b>${d.n}${d.c?' (this device)':''}</b><small>${d.p} · ${d.w}</small></span>${d.c?'':`<button class="link" data-so="${d.id}">Sign out</button>`}</div>`).join('');
+ $$('[data-so]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.arm){ST.dev=ST.dev.filter(d=>d.id!==b.dataset.so);stSave();drawDev();toast('Device signed out.');return}
+  b.dataset.arm='1';b.textContent='Tap again to sign out';setTimeout(()=>{if(b.isConnected){delete b.dataset.arm;b.textContent='Sign out'}},4000)}))}
+// auto-lock after inactivity
+let lastAct=Date.now();
+['pointerdown','keydown','touchstart'].forEach(ev=>document.addEventListener(ev,()=>{lastAct=Date.now()},{passive:true}));
+setInterval(()=>{const cur=$$('.scr').find(s=>!s.hidden);if(!cur||cur.id==='pin'||cur.id==='ob'||!SP().hidden)return;
+ if(Date.now()-lastAct>ST.lock*1000){$$('dialog[open]').forEach(d=>d.close());const back=cur.id;pinCancelTo=null;pinStart('unlock',()=>view(back));$('#pinS').textContent='Locked after a while without use. Enter your PIN to continue.'}},5000);
+// limits (sample amounts, in US dollar cents)
+const LIM={tx:200000,day:500000,mo:1500000};
+const toUsd=(c,cur)=>Math.round(c/(RT[cur||'USD']||1));
+const isToday=x=>x.d===nowD(),isMonth=x=>x.d.endsWith(nowD().split(' ').slice(1).join(' '));
+function usedAmt(pred){return TX.filter(x=>x.t==='Sent'&&x.s!=='Failed'&&x.s!=='Reversed'&&pred(x)).reduce((s,x)=>s+toUsd(Math.abs(x.a),x.cur),0)}
+function meter(l,u,m){const p=Math.min(100,u/m*100);return `<div class="lim"><div class="r" style="border:0;padding:0"><span>${l}</span><b class="num">${usd(u)} of ${usd(m)}</b></div><div class="meter" role="progressbar" aria-label="${l}" aria-valuemin="0" aria-valuemax="${m/100}" aria-valuenow="${Math.min(u,m)/100}"><i class="${p>=90?'hi':''}" style="width:${p}%"></i></div><small>${usd(Math.max(0,m-u))} left</small></div>`}
+function drawLim(){$('#limUse').innerHTML=meter('Sent today',usedAmt(isToday),LIM.day)+meter('Sent this month',usedAmt(isMonth),LIM.mo);
+ $('#limFix').innerHTML=rowsHtml([['Per transfer',usd(LIM.tx)],['Per top-up','10,000.00']])}
+$$('[data-go="limits"]').forEach(b=>b.addEventListener('click',drawLim));
+$('#to3').addEventListener('click',e=>{const n=Number($('#amount').value.trim().replace(',','.'));if(!isFinite(n)||n<=0)return;
+ const u=toUsd(Math.round(n*100),CUR),d=usedAmt(isToday),m=usedAmt(isMonth),sfx=CUR==='USD'?'':' (in US dollars)';let msg='';
+ if(u>LIM.tx)msg='That’s above your '+usd(LIM.tx)+' limit per transfer'+sfx+'.';
+ else if(d+u>LIM.day)msg='This would go over your '+usd(LIM.day)+' daily limit. You can still send '+usd(Math.max(0,LIM.day-d))+' today'+sfx+'.';
+ else if(m+u>LIM.mo)msg='This would go over your '+usd(LIM.mo)+' monthly limit. You can still send '+usd(Math.max(0,LIM.mo-m))+' this month'+sfx+'.';
+ if(msg){e.stopImmediatePropagation();$('#err').textContent=msg;$('#amount').focus()}},true);
+$('#limMore').addEventListener('click',()=>{view('support');drawSup();$('#supCat').value='A higher limit';$('#supMsg').focus()});
+// language
+function drawLang(){$('#langList').innerHTML=[['en','English','English'],['so','Soomaali','Somali']].map(l=>`<button class="copt" data-l="${l[0]}" aria-pressed="${ST.lang===l[0]}"><span class="k">${l[1]}<small>${l[2]}</small></span><span aria-hidden="true">${ST.lang===l[0]?'✓':''}</span></button>`).join('');
+ $$('#langList .copt').forEach(b=>b.addEventListener('click',()=>{ST.lang=b.dataset.l;stSave();drawLang()}));
+ $('#langNote').textContent=ST.lang==='so'?'We saved Soomaali as your choice. The Somali text is being written and checked by a native speaker, so AMANAH stays in English for now.':'';
+ $('#tzV').textContent=Intl.DateTimeFormat().resolvedOptions().timeZone;
+ $('#dtV').textContent=new Date().toLocaleString('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}
+$$('[data-go="language"]').forEach(b=>b.addEventListener('click',drawLang));
+// support requests
+function drawSup(){$('#supList').innerHTML=ST.tk.length?ST.tk.map(t=>`<div class="tx"><span class="who"><b>${escH(t.c)}</b><small>${t.id} · ${t.d}</small><small>${escH(t.m.slice(0,80))}${t.m.length>80?'…':''}</small></span><span class="badge pend">Open</span></div>`).join(''):'<p class="exp" style="padding:14px">No requests yet. Your requests appear here.</p>'}
+$('#supSend').addEventListener('click',()=>{const m=$('#supMsg').value.trim(),e=$('#supErr');$('#supMsg').removeAttribute('aria-invalid');
+ if(m.length<10){e.textContent='Tell us a bit more so we can help. Write at least 10 characters.';$('#supMsg').setAttribute('aria-invalid','true');$('#supMsg').focus();return}
+ const id='AMN-SUP-'+String(ST.tk.length+1).padStart(4,'0');ST.tk.unshift({id,c:$('#supCat').value,m,d:nowD()});stSave();
+ $('#supMsg').value='';e.textContent='';drawSup();notify('Request received','We have your request '+id+'.');toast('Request '+id+' created.')});
+$$('[data-go="support"]').forEach(b=>b.addEventListener('click',drawSup));
+stPaint();drawDev();drawLang();drawSup();drawLim();
+/* After a send, top-up or exchange finishes, show the success for a moment, then return to Home */
+(function(){
+ function backHome(ms,msg){setTimeout(()=>{const cur=document.querySelector('.scr:not([hidden])');if(cur&&cur.id!=='home'&&cur.id!=='pin'){view('home');if(msg)toast(msg)}},ms)}
+ const s4=document.querySelector('[data-step="4"]'),t6=document.querySelector('[data-tu="6"]');
+ [[s4,'Transfer submitted. See it in Activity.'],[t6,'Top-up complete. Balance updated.']].forEach(([el,msg])=>{
+  if(!el)return;let was=!el.hidden;
+  new MutationObserver(()=>{if(!el.hidden&&!was)backHome(2200,msg);was=!el.hidden}).observe(el,{attributes:true,attributeFilter:['hidden']});
+ });
+ const g=$('#xGo');if(g)g.addEventListener('click',()=>setTimeout(()=>{if($('#xAmt').value==='')backHome(1600,'Exchange complete. Balances updated.')},0));
+ $$('[data-tu="6"] [data-go="wallet"]').forEach(b=>{b.textContent='Back to home';b.dataset.go='home'});
+})();
+</script>
+</body>
+</html>
